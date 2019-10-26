@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "FightMaker",
+	"Description": "Fight Maker is a plugin to help with combat design and development",
+	"Category": "Other",
+	"CreatedBy": "Ben Stern",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "FightMaker",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "FightMakerEditor",
+			"Type": "Editor",
+			"LoadingPhase":  "PostEngineInit"
+		}
+	]
+}
