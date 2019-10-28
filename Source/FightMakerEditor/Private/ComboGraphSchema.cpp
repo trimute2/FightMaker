@@ -6,6 +6,7 @@
 #include "UObject/UObjectIterator.h"
 #include "ComboGraph/CGNode.h"
 #include "ComboGraph/CGNode_Action.h"
+#include "ComboGraph/CGNode_Condition.h"
 #include "Framework/Commands/GenericCommands.h"
 #include "ScopedTransaction.h"
 
@@ -83,6 +84,26 @@ bool UComboGraphSchema::NodeHasAction(const UEdGraphPin* InputPin, const UEdGrap
 	return true;
 }
 
+bool UComboGraphSchema::ConditionLoopTest(const UEdGraphPin * InputPin, const UEdGraphPin * OutputPin) const
+{
+	UComboGraphNode_Base* OutputNode = Cast<UComboGraphNode_Base>(OutputPin->GetOwningNode());
+	UComboGraphNode_Base* InputNode = Cast<UComboGraphNode_Base>(InputPin->GetOwningNode());
+	if (OutputNode != NULL && InputNode != NULL)
+	{
+		if (OutputNode->Node && OutputNode->Node->IsA<UCGNode_Condition>() &&
+			InputNode->Node && InputNode->Node->IsA<UCGNode_Condition>())
+		{
+			//im doing this with the graph nodes but i might want to do this with the runtime nodes instead
+			TArray<UComboGraphNode_Base *> Nodes;
+			//OutputNode->GetBranchNodes(Nodes);
+			InputNode->GetBranchNodes(Nodes);
+
+			//return Nodes.Contains(InputNode);
+			return Nodes.Contains(OutputNode);
+		}
+	}
+	return false;
+}
 
 void UComboGraphSchema::GetGraphContextActions(FGraphContextMenuBuilder& ContextMenuBuilder) const {
 	TSet<TSubclassOf<UCGNode> > Visited;
@@ -139,6 +160,9 @@ const FPinConnectionResponse UComboGraphSchema::CanCreateConnection(const UEdGra
 	}
 	if (!NodeHasAction(InputPin,OutputPin)) {
 		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Nodes can only directly connect to one action"));
+	}
+	if (ConditionLoopTest(InputPin, OutputPin)) {
+		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Conditions can not loop unless they are seperated by an action"));
 	}
 	return FPinConnectionResponse();
 }

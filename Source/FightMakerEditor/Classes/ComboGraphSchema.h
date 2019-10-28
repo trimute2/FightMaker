@@ -47,6 +47,7 @@ public:
 	static const FName PC_Combo;
 
 	bool NodeHasAction(const UEdGraphPin* InputPin, const UEdGraphPin* OutputPin) const;
+	bool ConditionLoopTest(const UEdGraphPin* InputPin, const UEdGraphPin* OutputPin) const;
 
 	//~ Begin EdGraphSchema Interface
 	virtual void GetGraphContextActions(FGraphContextMenuBuilder& ContextMenuBuilder) const override;

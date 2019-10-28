@@ -33,7 +33,7 @@ void UComboGraphNode_Base::AllocateDefaultPins() {
 	CreateOutputPins();
 }
 
-void UComboGraphNode_Base::MakerRootNode()
+void UComboGraphNode_Base::MakeRootNode()
 {
 	//UE_LOG(CGGraphNodeSystem, Log, TEXT("Make root called."));
 	if (Node) {
@@ -63,6 +63,23 @@ void UComboGraphNode_Base::GetOutputPins(TArray<class UEdGraphPin*>& OutputPins)
 		if (Pins[PinIndex]->Direction == EGPD_Output)
 		{
 			OutputPins.Add(Pins[PinIndex]);
+		}
+	}
+}
+
+//this function might be dumb
+void UComboGraphNode_Base::GetBranchNodes(TArray<UComboGraphNode_Base*>& GraphNodes)
+{
+	GraphNodes.Add(this);
+	if (Node && !Node->IsA<UCGNode_Action>()) {
+		for (UEdGraphPin* pin : Pins) {
+			if (pin->Direction == EGPD_Output) {
+				for (UEdGraphPin* Linked : pin->LinkedTo) {
+					if (UComboGraphNode_Base* LinkedNode = Cast<UComboGraphNode_Base>(Linked->GetOwningNode())) {
+						LinkedNode->GetBranchNodes(GraphNodes);
+					}
+				}
+			}
 		}
 	}
 }

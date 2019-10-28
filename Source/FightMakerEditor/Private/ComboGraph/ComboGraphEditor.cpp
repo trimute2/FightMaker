@@ -225,7 +225,6 @@ void FComboGraphEditor::OnSelectedNodesChanged(const TSet<class UObject*>& NewSe
 		}
 		DetailsView->SetObjects(Selection);
 	}
-//TODO: write on selection function for combo graph editor
 }
 
 void FComboGraphEditor::OnNodeTitleCommitted(const FText & NewText, ETextCommit::Type CommitInfo, UEdGraphNode * NodeBeingChanged)
@@ -319,7 +318,7 @@ void FComboGraphEditor::OnMakeRootNode()
 		UComboGraphNode_Base* SelectedNode = Cast<UComboGraphNode_Base>(*NodeIt);
 		if (SelectedNode != NULL)
 		{
-			SelectedNode->MakerRootNode();
+			SelectedNode->MakeRootNode();
 			//TODO: Make the node a root node
 			//ComboGraphGraphEditor->IsNodeTitleVisible(SelectedNode, true);
 			break;

@@ -25,9 +25,11 @@ public:
 	//virtual void CreateOutputPins() {};
 	virtual void CreateOutputPins();
 
-	void MakerRootNode();
+	void MakeRootNode();
 
 	void GetOutputPins(TArray<class UEdGraphPin*>& OutputPins);
+
+	void GetBranchNodes(TArray<UComboGraphNode_Base*>& GraphNodes);
 
 	// UEdGraphNode interface.
 	virtual void AllocateDefaultPins() override;
