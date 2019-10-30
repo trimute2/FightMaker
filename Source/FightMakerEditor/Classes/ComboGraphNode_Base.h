@@ -29,9 +29,12 @@ public:
 
 	void GetOutputPins(TArray<class UEdGraphPin*>& OutputPins);
 
+	//get the nodes on this branch
 	void GetBranchNodes(TArray<UComboGraphNode_Base*>& GraphNodes);
 
+	//////////////////////////////////
 	// UEdGraphNode interface.
+
 	virtual void AllocateDefaultPins() override;
 	virtual void PostPlacedNewNode() override;
 	virtual bool CanCreateUnderSpecifiedSchema(const UEdGraphSchema* Schema) const override;

@@ -84,10 +84,18 @@ protected:
 	UPROPERTY()
 	TArray<FString> Inputnames;
 
+	//note  getting rid of in favor of base nodes and entry nodes
 	//might make this a set instead of a list
 	//The list of nodes to base the evaluation off of
 	UPROPERTY()
 	TArray<class UCGNode*> RootNodes;
+
+
+	UPROPERTY()
+	TArray<class UCGNode*> BaseNodes; //Nodes that are evaluated by default
+
+	UPROPERTY()
+	TArray<class UCGNode*> EntryNodes; //Node that are entry points for evaluation but are not evaluated by default
 public:
 #if WITH_EDITOR
 	////////////////////////////////////////////////

@@ -89,6 +89,7 @@ void UComboGraphNode_Base::PostPlacedNewNode()
 	if (Node) {
 		if (UComboGraph* CGAsset = Cast<UComboGraph>(GetOuter()->GetOuter())) {
 			Node->InitializeFromAsset(*CGAsset);
+			Node->GraphNode = this;
 		}
 		bCanRenameNode = Node->IsA(UCGNode_Action::StaticClass());
 	}

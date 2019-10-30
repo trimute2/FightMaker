@@ -10,7 +10,7 @@
 
 FIGHTMAKER_API DECLARE_LOG_CATEGORY_EXTERN(CGNodeSystem, Log, All);
 
-
+class UEdGraphNode;
 /**
  * 
  */
@@ -21,6 +21,7 @@ class FIGHTMAKER_API UCGNode : public UObject
 
 	virtual void InitializeFromAsset(UComboGraph& Asset);
 
+	//maybe should be moved into black board base
 	UBlackboardData* GetBlackboardAsset() const;
 
 	//evaluate the current graph for actions
@@ -42,6 +43,9 @@ class FIGHTMAKER_API UCGNode : public UObject
 
 	UPROPERTY()
 	uint8 bIsConnectedToAction : 1;
+
+	UPROPERTY(transient)
+	UEdGraphNode* GraphNode;
 #endif
 
 protected:

@@ -7,6 +7,9 @@ DEFINE_LOG_CATEGORY(CGNodeSystem)
 
 UCGNode::UCGNode(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
+#if WITH_EDITORONLY_DATA
+	, GraphNode(NULL)
+#endif // WITH_EDITORONLY_DATA
 {
 }
 

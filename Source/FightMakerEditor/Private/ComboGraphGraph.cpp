@@ -38,24 +38,9 @@ public:
 
 		//TODO: write compile function
 
-		//clear root nodes from combo graph asset
+		// step one fill out branches
+		// look for nodes that belong in base nodes and entry nodes
 
-		//add root nodes from the graph to the graph asset
-		
-		//build out from the root nodes down the rest of the tree
-
-		
-		//for(int32 )
-
-		/*for (int32 NodeIndex = 0; NodeIndex < ComboGraph->Graph->Nodes.Num(); ++NodeIndex) {
-			UComboGraphNode_Base* GraphNode = Cast<UComboGraphNode_Base>(ComboGraph->Graph->Nodes[NodeIndex]);
-			if (GraphNode && GraphNode->Node) {
-				GraphNode->GetInputPins(InputPins);
-				ChildNodes.Empty();
-				for (int32 PinIndex = 0; PinIndex < InputPins.Num(); ++PinIndex)
-			}
-
-		}*/
 	}
 };
 
