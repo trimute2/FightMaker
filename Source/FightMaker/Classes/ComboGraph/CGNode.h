@@ -5,12 +5,15 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "FMAction.h"
-#include "ComboGraph.h"
+//#include "ComboGraph.h"
 #include "CGNode.generated.h"
+
+class UComboGraph;
+
 
 FIGHTMAKER_API DECLARE_LOG_CATEGORY_EXTERN(CGNodeSystem, Log, All);
 
-
+class UBlackboardData;
 class UEdGraphNode;
 /**
  * 

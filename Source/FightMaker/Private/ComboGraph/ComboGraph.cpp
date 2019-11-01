@@ -49,6 +49,13 @@ void UComboGraph::CreateGraph() {
 	}
 }
 
+void UComboGraph::SetUpNode(UCGNode* CGNode, bool bSelectNewNode)
+{
+	check(CGNode->GraphNode == NULL)
+
+	UComboGraph::GetComboGraphModuleInterface()->SetupAssetNode(Graph, CGNode, bSelectNewNode);
+}
+
 UEdGraph* UComboGraph::GetGraph() {
 	return Graph;
 }

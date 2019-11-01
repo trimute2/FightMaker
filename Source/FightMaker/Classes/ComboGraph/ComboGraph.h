@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-//#include "CGNode.h"
+#include "CGNode.h"
 #include "FMAction.h"
 #include "ComboGraph.generated.h"
 
@@ -80,6 +80,8 @@ public:
 
 	//void DetermineNodePriorities();
 protected:
+	////////////////////////////////////////////////
+	// All of these arrays and the map need to be goten rid of 
 	//TODO: get rid of un needed variables
 	UPROPERTY()
 	TMap<FString, uint32> InputNameMap;
@@ -95,11 +97,21 @@ protected:
 	TArray<class UCGNode*> RootNodes;
 
 
-	UPROPERTY()
-	TArray<class UCGNode*> BaseNodes; //Nodes that are evaluated by default
+	//UPROPERTY()
+	//TArray<class UCGNode*> BaseNodes; //Nodes that are evaluated by default
 
 	UPROPERTY()
 	TArray<class UCGNode*> EntryNodes; //Node that are entry points for evaluation but are not evaluated by default
+	////////////////////////////////////////////////
+	// the arrays that we should be keeping
+
+	UPROPERTY()
+	TArray<UCGNode*> BaseNodes; //The array of all nodes set in the graph
+
+	//will be added once I make Branch nodes
+	//UPROPERTY()
+	//UCGNode_Branch *RootNode; //the root node
+
 public:
 #if WITH_EDITOR
 	////////////////////////////////////////////////
@@ -109,6 +121,8 @@ public:
 
 	void CreateGraph();
 
+	void SetUpNode(UCGNode* CGNode, bool bSelectNewNode = true);
+
 	////////////////////////////////////////////////
 	//Used by editor to display and edit stuff
 	void GetInputNames(TArray<FString>& out);
@@ -117,10 +131,15 @@ public:
 
 	void MakeNodeRoot(class UCGNode* newRoot);
 
-	/*template<class T>
-	T* ConstructComboNode(TSubclassOf<UCGNode> SoundNodeClass = T::StaticClass(), bool bSelectNewNode = true) {
-
-	}*/
+	template<class T>
+	T* ConstructComboNode(TSubclassOf<UCGNode> ComboNodeClass = T::StaticClass(), bool bSelectNewNode = true) {
+		T* CGNode = NewObject<T>(this, ComboNodeClass, NAME_None, RF_Transactional);
+#if WITH_EDITOR
+		BaseNodes.Add(CGNode);
+		SetUpNode(CGNode, bSelectNewNode);
+#endif
+		return CGNode;
+	}
 
 	////////////////////////////////////////////////
 	// old functions to get rid of

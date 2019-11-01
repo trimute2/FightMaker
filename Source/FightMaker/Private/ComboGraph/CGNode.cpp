@@ -2,6 +2,7 @@
 
 
 #include "ComboGraph/CGNode.h"
+#include "ComboGraph/ComboGraph.h"
 
 DEFINE_LOG_CATEGORY(CGNodeSystem)
 
