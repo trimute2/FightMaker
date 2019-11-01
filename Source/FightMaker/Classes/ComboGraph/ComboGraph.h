@@ -42,9 +42,11 @@ public:
 
 	virtual UEdGraph* CreateNewComboGraphGraph(UComboGraph* ComboGraph) = 0;
 
+	virtual void SetupAssetNode(UEdGraph* CGGraph, class UCGNode* InComboNode, bool bSelectNewNode) = 0;
+
 	virtual void UpdateBlackBoardAsset(UEdGraph* ComboGraph) = 0;
 
-	virtual void CompileGraphFromNodes(UComboGraph* ComboGraph) = 0;
+	virtual void CompileAssetNodesFromGraphNodes(UComboGraph* ComboGraph) = 0;
 };
 #endif
 
@@ -75,6 +77,8 @@ public:
 
 	//MoveData evaluate(blackboard)
 	FFMAction Evaluate(class UBlackboardComponent* blackboard);
+
+	//void DetermineNodePriorities();
 protected:
 	//TODO: get rid of un needed variables
 	UPROPERTY()
@@ -111,11 +115,20 @@ public:
 
 	class UEdGraph* GetGraph();
 
+	void MakeNodeRoot(class UCGNode* newRoot);
+
+	/*template<class T>
+	T* ConstructComboNode(TSubclassOf<UCGNode> SoundNodeClass = T::StaticClass(), bool bSelectNewNode = true) {
+
+	}*/
+
+	////////////////////////////////////////////////
+	// old functions to get rid of
+
 	void AddInputEvent(FString name);
 
 	void ChangeInputName(FString newName, int index);
 
-	void MakeNodeRoot(class UCGNode* newRoot);
 
 	////////////////////////////////////////////////
 	//Used To interface with editor module

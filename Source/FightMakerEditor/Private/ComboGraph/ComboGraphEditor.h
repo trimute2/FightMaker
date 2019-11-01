@@ -35,6 +35,8 @@ public:
 
 public:
 	void InitComboGraphEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, class UComboGraph* InitComboGraph);
+
+	class UCGNode* CreateNewUCGNode(UClass* NewExpressionClass, const FVector2D& NodePos, bool bAutoSelect, bool bAutoAssignResource);
 protected:
 	UComboGraph* ComboGraphBeingEdited;
 

@@ -4,6 +4,7 @@
 #include "ComboGraphGraph.h"
 #include "ComboGraph/ComboGraph.h"
 #include "ComboGraphSchema.h"
+#include "ComboGraph/CGNode.h"
 #include "Kismet2/BlueprintEditorUtils.h"
 
 
@@ -25,6 +26,14 @@ public:
 		return ComboGraphGraph;
 	}
 
+	void SetupAssetNode(UEdGraph* CGGraph, UCGNode* InComboNode, bool bSelectNewNode) {
+		FGraphNodeCreator<UComboGraphNode_Base> NodeCreator(*CGGraph);
+		UComboGraphNode_Base *GraphNode = NodeCreator.CreateNode(bSelectNewNode);
+		//GraphNode->SetSoundNode(InComboNode);
+		GraphNode->Node = InComboNode;
+		NodeCreator.Finalize();
+	}
+
 	void UpdateBlackBoardAsset(UEdGraph* Graph)
 	{
 		if (UComboGraphGraph* ComboGraphGraph = Cast<UComboGraphGraph>(Graph)) {
@@ -32,7 +41,7 @@ public:
 		}
 	}
 
-	void CompileGraphFromNodes(UComboGraph* ComboGraph) {
+	void CompileAssetNodesFromGraphNodes(UComboGraph* ComboGraph) {
 		TArray<UComboGraphNode_Base*> ChildNodes;
 		TArray<UEdGraphPin*> InputPins;
 

@@ -10,6 +10,7 @@
 
 FIGHTMAKER_API DECLARE_LOG_CATEGORY_EXTERN(CGNodeSystem, Log, All);
 
+
 class UEdGraphNode;
 /**
  * 
@@ -44,7 +45,7 @@ class FIGHTMAKER_API UCGNode : public UObject
 	UPROPERTY()
 	uint8 bIsConnectedToAction : 1;
 
-	UPROPERTY(transient)
+	UPROPERTY()
 	UEdGraphNode* GraphNode;
 #endif
 
