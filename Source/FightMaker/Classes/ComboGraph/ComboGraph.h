@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "CGNode.h"
+#include "CGNode_Branching.h"
 #include "FMAction.h"
 #include "ComboGraph.generated.h"
 
@@ -109,8 +110,8 @@ protected:
 	TArray<UCGNode*> BaseNodes; //The array of all nodes set in the graph
 
 	//will be added once I make Branch nodes
-	//UPROPERTY()
-	//UCGNode_Branch *RootNode; //the root node
+	UPROPERTY()
+	UCGNode_Branching *RootNode; //the root node
 
 public:
 #if WITH_EDITOR
@@ -123,6 +124,8 @@ public:
 
 	void SetUpNode(UCGNode* CGNode, bool bSelectNewNode = true);
 
+	void RemoveNodeFromBase(UCGNode* CGNode);
+
 	////////////////////////////////////////////////
 	//Used by editor to display and edit stuff
 	void GetInputNames(TArray<FString>& out);
@@ -131,6 +134,7 @@ public:
 
 	void MakeNodeRoot(class UCGNode* newRoot);
 
+#endif
 	template<class T>
 	T* ConstructComboNode(TSubclassOf<UCGNode> ComboNodeClass = T::StaticClass(), bool bSelectNewNode = true) {
 		T* CGNode = NewObject<T>(this, ComboNodeClass, NAME_None, RF_Transactional);
@@ -140,6 +144,8 @@ public:
 #endif
 		return CGNode;
 	}
+
+#if WITH_EDITOR
 
 	////////////////////////////////////////////////
 	// old functions to get rid of

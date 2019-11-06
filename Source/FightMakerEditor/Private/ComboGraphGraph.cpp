@@ -45,6 +45,7 @@ public:
 		TArray<UComboGraphNode_Base*> ChildNodes;
 		TArray<UEdGraphPin*> InputPins;
 
+		
 		//TODO: write compile function
 
 		// step one fill out branches

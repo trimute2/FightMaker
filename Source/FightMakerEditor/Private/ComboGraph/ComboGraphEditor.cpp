@@ -314,6 +314,8 @@ void FComboGraphEditor::DeleteSelectedNodes()
 
 				//TODO: call the recompile graph method here once written
 
+				ComboGraphBeingEdited->RemoveNodeFromBase(DelNode);
+
 				ComboGraphBeingEdited->MarkPackageDirty();
 			}
 			else {

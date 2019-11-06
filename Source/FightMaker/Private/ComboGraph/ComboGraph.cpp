@@ -56,6 +56,11 @@ void UComboGraph::SetUpNode(UCGNode* CGNode, bool bSelectNewNode)
 	UComboGraph::GetComboGraphModuleInterface()->SetupAssetNode(Graph, CGNode, bSelectNewNode);
 }
 
+void UComboGraph::RemoveNodeFromBase(UCGNode * CGNode)
+{
+	BaseNodes.Remove(CGNode);
+}
+
 UEdGraph* UComboGraph::GetGraph() {
 	return Graph;
 }
