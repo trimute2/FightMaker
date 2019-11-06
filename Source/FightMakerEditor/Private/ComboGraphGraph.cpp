@@ -44,12 +44,43 @@ public:
 	void CompileAssetNodesFromGraphNodes(UComboGraph* ComboGraph) {
 		TArray<UComboGraphNode_Base*> ChildNodes;
 		TArray<UEdGraphPin*> InputPins;
+		TArray<UEdGraphPin*> OutputPins;
 
 		
+		//The nodes that are the ends of the graph;
+		TArray< UComboGraphNode_Base*> leafNodes;
+		
+		//TArray<UCGNode_Branching> branchEntryNodes;
 		//TODO: write compile function
 
 		// step one fill out branches
 		// look for nodes that belong in base nodes and entry nodes
+
+		for (int32 NodeIndex = 0; NodeIndex < ComboGraph->Graph->Nodes.Num(); ++NodeIndex) {
+			UComboGraphNode_Base* graphNode = Cast<UComboGraphNode_Base>(ComboGraph->Graph->Nodes[NodeIndex]);
+			//check if this is a leaf node
+			graphNode->GetOutputPins(OutputPins);
+			if (OutputPins[0]->LinkedTo.Num() == 0) {
+				leafNodes.Add(graphNode);
+			}
+			if (graphNode && graphNode->Node) {
+				//check if node returns
+				if (false/*test not determined yet*/) {
+					
+					//test if this node requires a branching node
+					if (false /*test not determined yet*/) {
+						//add branchEntryNodes
+						//attatch node to branch entry node
+						//set the node whose connections we are setting to the branch entry nodes
+					}
+				}
+				else {
+					//set priority to -1 to show that the priority needs to be regenerated
+				}
+				//attatch nodes together
+
+			}
+		}
 
 	}
 };
