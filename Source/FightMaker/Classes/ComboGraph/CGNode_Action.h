@@ -43,5 +43,5 @@ class FIGHTMAKER_API UCGNode_Action : public UCGNode
 	virtual int DeterminePriority() override;
 
 	//evaluate the current graph for actions
-	virtual void Evaluate(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) override;
+	virtual void EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) override;
 };

@@ -19,7 +19,7 @@ class FIGHTMAKER_API UCGNode_Condition : public UCGNode
 #endif
 
 	//evaluate the current graph for actions
-	virtual void Evaluate(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) override;
+	virtual void EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) override;
 	
 	//the condition check that this node attempts
 	virtual bool ConditionCheck(class UBlackboardComponent& blackboard) { return false; };

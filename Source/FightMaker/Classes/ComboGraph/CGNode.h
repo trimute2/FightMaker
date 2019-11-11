@@ -28,8 +28,10 @@ class FIGHTMAKER_API UCGNode : public UObject
 	//maybe should be moved into black board base
 	UBlackboardData* GetBlackboardAsset() const;
 
+	void Evaluate(FFMAction& ActionOutput, class UBlackboardComponent* blackboard);
+
 	//evaluate the current graph for actions
-	virtual void Evaluate(FFMAction& ActionOutput, class UBlackboardComponent* blackboard);
+	virtual void EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard);
 	//virtual void
 
 	//maybe move this to the graph representation later
@@ -56,6 +58,7 @@ class FIGHTMAKER_API UCGNode : public UObject
 	virtual void SetChildNodes(TArray<UCGNode*>& children);
 #endif
 	virtual int DeterminePriority();
+	virtual bool DetermineBranchHasAction();
 	virtual void Serialize(FArchive& Ar) override;
 
 protected:
@@ -64,9 +67,14 @@ protected:
 	UPROPERTY()
 	int priority;
 
+	UPROPERTY()
+	uint8 bBranchHasAction : 1;
+
 	//The nodes that branch off of this node
 	UPROPERTY()
 	TArray<UCGNode*> ChildNodes;
+
+	virtual bool ShouldEvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard);
 
 private:
 

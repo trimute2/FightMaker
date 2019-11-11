@@ -25,7 +25,13 @@ UBlackboardData * UCGNode::GetBlackboardAsset() const
 	return CGAsset ? CGAsset->BlackboardAsset : NULL;
 }
 
-void UCGNode::Evaluate(FFMAction & ActionOutput, UBlackboardComponent * blackboard)
+void UCGNode::Evaluate(FFMAction& ActionOutput, UBlackboardComponent* blackboard) {
+	if (ShouldEvaluateNode(ActionOutput,blackboard)) {
+		EvaluateNode(ActionOutput, blackboard);
+	}
+}
+
+void UCGNode::EvaluateNode(FFMAction & ActionOutput, UBlackboardComponent * blackboard)
 {
 }
 
@@ -43,6 +49,21 @@ int UCGNode::DeterminePriority()
 		priority = FMath::Max<int>(priority, childPriority);
 	}
 	return priority;
+}
+
+bool UCGNode::DetermineBranchHasAction() {
+	bBranchHasAction = false;
+	for (UCGNode* child : ChildNodes) {
+		if (child->DetermineBranchHasAction()) {
+			bBranchHasAction = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool UCGNode::ShouldEvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
+	return (bBranchHasAction && ActionOutput.ActionInfo.Priority <= priority);
 }
 
 void UCGNode::Serialize(FArchive& Ar) {

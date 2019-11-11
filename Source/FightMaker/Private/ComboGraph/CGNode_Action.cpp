@@ -19,7 +19,7 @@ int UCGNode_Action::DeterminePriority()
 	return priority;
 }
 
-void UCGNode_Action::Evaluate(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
+void UCGNode_Action::EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
 	ActionOutput = Action;
 }
 #undef LOCTEXT_NAMESPACE

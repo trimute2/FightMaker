@@ -21,7 +21,7 @@ FFMAction UComboGraph::Evaluate(UBlackboardComponent * blackboard)
 {
 	FFMAction OutputAction;
 	for (UCGNode* node : RootNodes) {
-		node->Evaluate(OutputAction, blackboard);
+		node->EvaluateNode(OutputAction, blackboard);
 	}
 	return OutputAction;
 	//return FFMAction();

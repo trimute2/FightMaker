@@ -9,11 +9,11 @@ UCGNode_Condition::UCGNode_Condition(const class FObjectInitializer& ObjectIniti
 
 }
 
-void UCGNode_Condition::Evaluate(FFMAction & ActionOutput, UBlackboardComponent * blackboard)
+void UCGNode_Condition::EvaluateNode(FFMAction & ActionOutput, UBlackboardComponent * blackboard)
 {
 	if (priority>=ActionOutput.ActionInfo.Priority &&ConditionCheck(*blackboard)) {
 		for (UCGNode* node : ChildNodes) {
-			node->Evaluate(ActionOutput, blackboard);
+			node->EvaluateNode(ActionOutput, blackboard);
 		}
 	}
 }
