@@ -3,6 +3,7 @@
 
 #include "ComboGraph/CGNode.h"
 #include "ComboGraph/ComboGraph.h"
+#include "EngineUtils.h"
 
 DEFINE_LOG_CATEGORY(CGNodeSystem)
 
@@ -26,4 +27,38 @@ UBlackboardData * UCGNode::GetBlackboardAsset() const
 
 void UCGNode::Evaluate(FFMAction & ActionOutput, UBlackboardComponent * blackboard)
 {
+}
+
+#if WITH_EDITOR
+void UCGNode::SetChildNodes(TArray<UCGNode*>& children) {
+	ChildNodes = children;
+}
+#endif
+
+int UCGNode::DeterminePriority()
+{
+	priority = -1;
+	for (UCGNode * child : ChildNodes) {
+		int childPriority = child->DeterminePriority();
+		priority = FMath::Max<int>(priority, childPriority);
+	}
+	return priority;
+}
+
+void UCGNode::Serialize(FArchive& Ar) {
+	Super::Serialize(Ar);
+	 
+	if (Ar.UE4Ver() >= VER_UE4_COOKED_ASSETS_IN_EDITOR_SUPPORT) {
+		FStripDataFlags StripFlags(Ar);
+#if WITH_EDITORONLY_DATA
+		if (!StripFlags.IsEditorDataStripped()) {
+			Ar << GraphNode;
+		}
+#endif
+	}
+#if WITH_EDITOR
+	else{
+		Ar << GraphNode;
+	}
+#endif
 }

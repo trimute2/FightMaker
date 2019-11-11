@@ -25,6 +25,9 @@ class FIGHTMAKER_API UCGNode_Action : public UCGNode
 	UPROPERTY()
 	FString ActionName;
 
+	UPROPERTY()
+	int BranchPriority;
+
 #if WITH_EDITORONLY_DATA
 	//The nodes title
 	virtual FText ContextNodeTitle() override {
@@ -36,6 +39,8 @@ class FIGHTMAKER_API UCGNode_Action : public UCGNode
 
 	virtual FLinearColor ContextNodeTitleColor() override { return FLinearColor(1.f, 0.0f, 0.0f, 1.0f); };
 #endif
+
+	virtual int DeterminePriority() override;
 
 	//evaluate the current graph for actions
 	virtual void Evaluate(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) override;

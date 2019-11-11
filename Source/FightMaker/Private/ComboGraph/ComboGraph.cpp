@@ -3,6 +3,7 @@
 
 #include "ComboGraph/ComboGraph.h"
 #include "ComboGraph/CGNode.h"
+#include "EngineUtils.h"
 
 DEFINE_LOG_CATEGORY(CGraphsystem)
 
@@ -118,3 +119,32 @@ void UComboGraph::PostEditChangeProperty(FPropertyChangedEvent & PropertyChanged
 	
 }
 #endif
+
+void UComboGraph::Serialize(FStructuredArchive::FRecord Record)
+{
+	FArchive& UnderlyingArchive = Record.GetUnderlyingArchive();
+
+	// Always force the duration to be updated when we are saving or cooking
+	if (UnderlyingArchive.IsSaving() || UnderlyingArchive.IsCooking())
+	{
+		//generate some of the values
+	}
+
+	Super::Serialize(Record);
+
+	if (UnderlyingArchive.UE4Ver() >= VER_UE4_COOKED_ASSETS_IN_EDITOR_SUPPORT) {
+		FStripDataFlags StripFlags(Record.EnterField(FIELD_NAME_TEXT("ComboGraphStripFlags")));
+#if WITH_EDITORONLY_DATA
+		if (!StripFlags.IsEditorDataStripped())
+		{
+			Record << NAMED_FIELD(Graph);
+		}
+#endif
+	}
+#if WITH_EDITOR
+	else
+	{
+		Record << NAMED_FIELD(Graph);
+	}
+#endif
+}

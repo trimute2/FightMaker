@@ -42,11 +42,10 @@ public:
 	}
 
 	void CompileAssetNodesFromGraphNodes(UComboGraph* ComboGraph) {
-		TArray<UComboGraphNode_Base*> ChildNodes;
-		TArray<UEdGraphPin*> InputPins;
+		TArray<UCGNode*> ChildNodes;
+		TArray<UCGNode*> RootNodes;
 		TArray<UEdGraphPin*> OutputPins;
 
-		
 		//The nodes that are the ends of the graph;
 		TArray< UComboGraphNode_Base*> leafNodes;
 		
@@ -56,32 +55,37 @@ public:
 		// step one fill out branches
 		// look for nodes that belong in base nodes and entry nodes
 
+		//ComboGraph->RootNode.
+
 		for (int32 NodeIndex = 0; NodeIndex < ComboGraph->Graph->Nodes.Num(); ++NodeIndex) {
 			UComboGraphNode_Base* graphNode = Cast<UComboGraphNode_Base>(ComboGraph->Graph->Nodes[NodeIndex]);
-			//check if this is a leaf node
-			graphNode->GetOutputPins(OutputPins);
-			if (OutputPins[0]->LinkedTo.Num() == 0) {
-				leafNodes.Add(graphNode);
-			}
-			if (graphNode && graphNode->Node) {
-				//check if node returns
-				if (false/*test not determined yet*/) {
-					
-					//test if this node requires a branching node
-					if (false /*test not determined yet*/) {
-						//add branchEntryNodes
-						//attatch node to branch entry node
-						//set the node whose connections we are setting to the branch entry nodes
+			if (graphNode && graphNode->Node)
+			{
+				//check if this is a leaf node
+				graphNode->GetOutputPins(OutputPins);
+				if (OutputPins[0]->LinkedTo.Num() == 0) {
+					leafNodes.Add(graphNode);
+				}
+				if (graphNode && graphNode->Node) {
+					//attatch nodes together
+					ChildNodes.Empty();
+					for (UEdGraphPin * OutputPin : OutputPins) {
+						for (UEdGraphPin * linkedTo : OutputPin->LinkedTo) {
+							UComboGraphNode_Base * GraphChildNode = Cast<UComboGraphNode_Base>(linkedTo->GetOwningNode());
+							if (GraphChildNode && GraphChildNode->Node) {
+								ChildNodes.Add(GraphChildNode->Node);
+							}
+						}
+					}
+					graphNode->Node->SetChildNodes(ChildNodes);
+					if (graphNode->Node->bIsRoot) {
+						RootNodes.Add(graphNode->Node);
 					}
 				}
-				else {
-					//set priority to -1 to show that the priority needs to be regenerated
-				}
-				//attatch nodes together
-
 			}
 		}
 
+		ComboGraph->RootNode->SetChildNodes(RootNodes);
 	}
 };
 

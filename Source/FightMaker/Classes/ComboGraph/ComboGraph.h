@@ -79,6 +79,9 @@ public:
 	//MoveData evaluate(blackboard)
 	FFMAction Evaluate(class UBlackboardComponent* blackboard);
 
+
+	UPROPERTY()
+	UCGNode_Branching *RootNode; //the root node
 	//void DetermineNodePriorities();
 protected:
 	////////////////////////////////////////////////
@@ -110,8 +113,8 @@ protected:
 	TArray<UCGNode*> BaseNodes; //The array of all nodes set in the graph
 
 	//will be added once I make Branch nodes
-	UPROPERTY()
-	UCGNode_Branching *RootNode; //the root node
+	//UPROPERTY()
+	//UCGNode_Branching *RootNode; //the root node
 
 public:
 #if WITH_EDITOR
@@ -168,6 +171,8 @@ private:
 	static TSharedPtr<IComboGraphModuleInterface> ComboGraphModuleInterface;
 
 #endif
+public:
+		virtual void Serialize(FStructuredArchive::FRecord Record) override;
 
 	
 };

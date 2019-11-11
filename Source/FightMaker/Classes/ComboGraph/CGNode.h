@@ -32,6 +32,7 @@ class FIGHTMAKER_API UCGNode : public UObject
 	virtual void Evaluate(FFMAction& ActionOutput, class UBlackboardComponent* blackboard);
 	//virtual void
 
+	//maybe move this to the graph representation later
 	UPROPERTY()
 	uint8 bIsRoot : 1;
 
@@ -51,16 +52,24 @@ class FIGHTMAKER_API UCGNode : public UObject
 	UPROPERTY()
 	UEdGraphNode* GraphNode;
 #endif
+#if WITH_EDITOR
+	virtual void SetChildNodes(TArray<UCGNode*>& children);
+#endif
+	virtual int DeterminePriority();
+	virtual void Serialize(FArchive& Ar) override;
 
 protected:
 
 	//The highest priority action that is on this node path
+	UPROPERTY()
 	int priority;
 
 	//The nodes that branch off of this node
+	UPROPERTY()
 	TArray<UCGNode*> ChildNodes;
 
 private:
 
+	UPROPERTY()
 	UComboGraph* CGAsset;
 };

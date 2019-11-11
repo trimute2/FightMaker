@@ -12,6 +12,12 @@ UCGNode_Action::UCGNode_Action(const class FObjectInitializer& ObjectInitializer
 #endif
 }
 
+int UCGNode_Action::DeterminePriority()
+{
+	BranchPriority = Super::DeterminePriority();
+	priority = Action.ActionInfo.Priority;
+	return priority;
+}
 
 void UCGNode_Action::Evaluate(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
 	ActionOutput = Action;
