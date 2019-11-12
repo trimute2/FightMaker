@@ -16,4 +16,5 @@ class FIGHTMAKEREDITOR_API UComboGraphGraph : public UEdGraph
 
 	void UpdateBlackBoardChange();
 	
+	class UComboGraph* GetComboGraph();
 };

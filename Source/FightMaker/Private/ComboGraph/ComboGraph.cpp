@@ -14,17 +14,17 @@ TSharedPtr<IComboGraphModuleInterface> UComboGraph::ComboGraphModuleInterface = 
 UComboGraph::UComboGraph(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-
+	
 }
 
 FFMAction UComboGraph::Evaluate(UBlackboardComponent * blackboard)
 {
 	FFMAction OutputAction;
+	RootNode->Evaluate(OutputAction, blackboard);
 	for (UCGNode* node : RootNodes) {
-		node->EvaluateNode(OutputAction, blackboard);
+		node->Evaluate(OutputAction, blackboard);
 	}
 	return OutputAction;
-	//return FFMAction();
 }
 
 #if WITH_EDITOR
@@ -33,6 +33,7 @@ void UComboGraph::PostInitProperties() {
 	if (!HasAnyFlags(RF_ClassDefaultObject | RF_NeedLoad))
 	{
 		CreateGraph();
+		RootNode = NewObject<UCGNode_Branching>(this);
 	}
 
 	//CacheAggregateValues();
@@ -83,6 +84,10 @@ void UComboGraph::SetComboGraphModuleInterface(TSharedPtr<IComboGraphModuleInter
 {
 	check(!ComboGraphModuleInterface.IsValid());
 	ComboGraphModuleInterface = InComboGraphModuleInterface;
+}
+
+void UComboGraph::CompileAssetNodesFromGraphNodes() {
+	UComboGraph::GetComboGraphModuleInterface()->CompileAssetNodesFromGraphNodes(this);
 }
 
 /** Gets the sound cue graph editor implementation. */

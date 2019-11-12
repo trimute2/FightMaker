@@ -39,6 +39,21 @@ void UCGNode::EvaluateNode(FFMAction & ActionOutput, UBlackboardComponent * blac
 void UCGNode::SetChildNodes(TArray<UCGNode*>& children) {
 	ChildNodes = children;
 }
+
+void UCGNode::AddChildNodes(TArray<UCGNode*>& children)
+{
+	ChildNodes.Append(children);
+}
+
+void UCGNode::AddChildNodes(UCGNode * child)
+{
+	ChildNodes.Add(child);
+}
+
+//overriden by nodes that can have a complex compile
+void UCGNode::CompileComplexNode(TArray<UCGNode*> OutputNodes, TArray<UCGNode*> InputNodes)
+{
+}
 #endif
 
 int UCGNode::DeterminePriority()

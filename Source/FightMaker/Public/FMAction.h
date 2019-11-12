@@ -3,6 +3,8 @@
 #include "Animation/AnimMontage.h"
 #include "FMAction.generated.h"
 
+class UCGNode;
+
 USTRUCT(BlueprintType)
 struct FFMActionInfo {
 	GENERATED_USTRUCT_BODY();
@@ -43,5 +45,8 @@ struct FFMAction {
 
 	UPROPERTY(BlueprintAssignable)
 	FActionConditionResponseDelegate RollbackAction; //delegate called to rollback register
+
+	UPROPERTY()
+	UCGNode * EvaluatedNext;
 };
 

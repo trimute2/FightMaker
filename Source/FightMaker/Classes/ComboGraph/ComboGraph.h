@@ -164,7 +164,11 @@ public:
 
 	static void SetComboGraphModuleInterface(TSharedPtr<IComboGraphModuleInterface> InComboGraphModuleInterface);
 
+	void CompileAssetNodesFromGraphNodes();
+
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+
+
 
 private:
 

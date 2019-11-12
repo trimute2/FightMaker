@@ -84,6 +84,22 @@ void UComboGraphNode_Base::GetBranchNodes(TArray<UComboGraphNode_Base*>& GraphNo
 	}
 }
 
+void UComboGraphNode_Base::CheckConnections()
+{
+	if (!Node->IsA<UCGNode_Action>()) {
+		bComplexCompile = false;
+		TArray<UEdGraphPin*> OutputPins;
+		GetOutputPins(OutputPins);
+		for (UEdGraphPin* inputConnection : OutputPins[0]->LinkedTo) {
+			UComboGraphNode_Base *outputNode = Cast< UComboGraphNode_Base>(inputConnection->GetOwningNode());
+			if (outputNode && outputNode->Node->IsA<UCGNode_Action>() && outputNode->bComplexCompile) {
+				bComplexCompile = true;
+				break;
+			}
+		}
+	}
+}
+
 void UComboGraphNode_Base::PostPlacedNewNode()
 {
 	if (Node) {
@@ -116,6 +132,46 @@ FLinearColor UComboGraphNode_Base::GetNodeTitleColor() const
 	return Node->ContextNodeTitleColor();
 }
 
+void UComboGraphNode_Base::NodeConnectionListChanged()
+{
+	Super::NodeConnectionListChanged();
+	//bool tempComplex = bComplexCompile;
+	if (Node->IsA<UCGNode_Action>()) {
+		TArray<UEdGraphPin*> InputPins;
+		for (int32 PinIndex = 0; PinIndex < Pins.Num(); PinIndex++)
+		{
+			if (Pins[PinIndex]->Direction == EGPD_Input)
+			{
+				InputPins.Add(Pins[PinIndex]);
+			}
+		}
+		if (InputPins.Num() > 0) {
+			bComplexCompile = InputPins[0]->LinkedTo.Num() > 1;
+			if (bComplexCompile) {
+				UE_LOG(CGGraphNodeSystem, Warning, TEXT("Node is now complex construction."));
+			}
+			//orignally planed to have complex compile on both nodes that were complex compile and nodes linking to complex
+			//compile but realised that was kinda dumb
+			/*if (tempComplex != bComplexCompile) {
+				for (UEdGraphPin* inputConnection : InputPins[0]->LinkedTo) {
+					UComboGraphNode_Base *inputNode = Cast< UComboGraphNode_Base>(inputConnection->GetOwningNode());
+					if (!bComplexCompile) {
+						inputNode->CheckConnections();
+					}
+					else {
+						inputNode->bComplexCompile = true;
+					}
+				}
+			}*/
+		}
+		else {
+			bComplexCompile = false;
+		}
+	}
+	/*else {
+		CheckConnections();
+	}*/
+}
 /*void UComboGraphNode_Base::GetMenuEntries(FGraphContextMenuBuilder & ContextMenuBuilder) const
 {
 	const FText Name = FText::FromString(TEXT("TEST"));

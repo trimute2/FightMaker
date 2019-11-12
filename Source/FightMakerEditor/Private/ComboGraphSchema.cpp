@@ -8,6 +8,8 @@
 #include "ComboGraph/CGNode_Action.h"
 #include "ComboGraph/CGNode_Condition.h"
 #include "Framework/Commands/GenericCommands.h"
+#include "ComboGraphGraph.h"
+#include "ComboGraph/ComboGraph.h"
 #include "ScopedTransaction.h"
 
 #define LOCTEXT_NAMESPACE "ComboGraphSchema"
@@ -165,6 +167,18 @@ const FPinConnectionResponse UComboGraphSchema::CanCreateConnection(const UEdGra
 		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Conditions can not loop unless they are seperated by an action"));
 	}
 	return FPinConnectionResponse();
+}
+
+bool UComboGraphSchema::TryCreateConnection(UEdGraphPin * A, UEdGraphPin * B) const
+{
+	bool bModified = UEdGraphSchema::TryCreateConnection(A, B);
+
+	if (bModified)
+	{
+		CastChecked<UComboGraphGraph>(A->GetOwningNode()->GetGraph())->GetComboGraph()->CompileAssetNodesFromGraphNodes();
+	}
+
+	return bModified;
 }
 
 FLinearColor UComboGraphSchema::GetPinTypeColor(const FEdGraphPinType& PinType) const

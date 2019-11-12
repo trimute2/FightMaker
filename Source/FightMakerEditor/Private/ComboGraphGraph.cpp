@@ -43,6 +43,7 @@ public:
 
 	void CompileAssetNodesFromGraphNodes(UComboGraph* ComboGraph) {
 		TArray<UCGNode*> ChildNodes;
+		TArray<UComboGraphNode_Base*> ComplexCompile;
 		TArray<UCGNode*> RootNodes;
 		TArray<UEdGraphPin*> OutputPins;
 
@@ -57,35 +58,68 @@ public:
 
 		//ComboGraph->RootNode.
 
+		//determine if nodes can be constructed normally
 		for (int32 NodeIndex = 0; NodeIndex < ComboGraph->Graph->Nodes.Num(); ++NodeIndex) {
 			UComboGraphNode_Base* graphNode = Cast<UComboGraphNode_Base>(ComboGraph->Graph->Nodes[NodeIndex]);
-			if (graphNode && graphNode->Node)
+			if (graphNode)
 			{
 				//check if this is a leaf node
 				graphNode->GetOutputPins(OutputPins);
 				if (OutputPins[0]->LinkedTo.Num() == 0) {
 					leafNodes.Add(graphNode);
 				}
-				if (graphNode && graphNode->Node) {
+				if (graphNode->bComplexCompile) {
+					ComplexCompile.Add(graphNode);
+				}
+				else if (graphNode->Node) {
 					//attatch nodes together
 					ChildNodes.Empty();
 					for (UEdGraphPin * OutputPin : OutputPins) {
 						for (UEdGraphPin * linkedTo : OutputPin->LinkedTo) {
 							UComboGraphNode_Base * GraphChildNode = Cast<UComboGraphNode_Base>(linkedTo->GetOwningNode());
-							if (GraphChildNode && GraphChildNode->Node) {
+							if (GraphChildNode && !GraphChildNode->bComplexCompile && GraphChildNode->Node) {
 								ChildNodes.Add(GraphChildNode->Node);
 							}
 						}
 					}
+					graphNode->Node->SetFlags(RF_Transactional);
+					graphNode->Node->Modify();
 					graphNode->Node->SetChildNodes(ChildNodes);
+					graphNode->Node->PostEditChange();
+
 					if (graphNode->Node->bIsRoot) {
 						RootNodes.Add(graphNode->Node);
 					}
 				}
 			}
 		}
-
+		TArray<UCGNode*> InputNodes;
+		TArray<UCGNode*> OutputNodes;
+		for (UComboGraphNode_Base* graphNode : ComplexCompile) {
+			InputNodes.Empty();
+			OutputNodes.Empty();
+			OutputPins = graphNode->GetAllPins();
+			for (UEdGraphPin* pin : OutputPins) {
+				for (UEdGraphPin * linkedPin : pin->LinkedTo)
+				{
+					UComboGraphNode_Base * linkedNode = Cast<UComboGraphNode_Base>(linkedPin->GetOwningNode());
+					if (linkedNode && linkedNode->Node) {
+						if (pin->Direction == EGPD_Input) {
+							InputNodes.Add(linkedNode->Node);
+						}
+						else {
+							OutputNodes.Add(linkedNode->Node);
+						}
+					}
+				}
+			}
+			graphNode->Node->CompileComplexNode(OutputNodes, InputNodes);
+		}
+		ComboGraph->RootNode->SetFlags(RF_Transactional);
+		ComboGraph->RootNode->Modify();
 		ComboGraph->RootNode->SetChildNodes(RootNodes);
+		ComboGraph->RootNode->PostEditChange();
+
 	}
 };
 
@@ -160,4 +194,9 @@ void UComboGraphGraph::UpdateBlackBoardChange()
 		}
 	}
 	*/
+}
+
+UComboGraph * UComboGraphGraph::GetComboGraph()
+{
+	return CastChecked<UComboGraph>(GetOuter());
 }

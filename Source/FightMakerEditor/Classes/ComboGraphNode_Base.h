@@ -32,6 +32,8 @@ public:
 	//get the nodes on this branch
 	void GetBranchNodes(TArray<UComboGraphNode_Base*>& GraphNodes);
 
+	void CheckConnections();
+
 	//////////////////////////////////
 	// UEdGraphNode interface.
 
@@ -40,6 +42,7 @@ public:
 	virtual bool CanCreateUnderSpecifiedSchema(const UEdGraphSchema* Schema) const override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FLinearColor GetNodeTitleColor() const override;
+	virtual void NodeConnectionListChanged() override;
 	//virtual void GetMenuEntries(struct FGraphContextMenuBuilder & ContextMenuBuilder) const override;
 	virtual void GetContextMenuActions(const FGraphNodeContextMenuBuilder & Context) const override;
 	virtual void OnRenameNode(const FString& NewName) override;
@@ -47,4 +50,7 @@ public:
 
 	UPROPERTY(Instanced)
 	UCGNode* Node;
+
+	UPROPERTY()
+	uint8 bComplexCompile;
 };

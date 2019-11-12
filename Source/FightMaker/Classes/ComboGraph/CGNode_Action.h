@@ -40,6 +40,10 @@ class FIGHTMAKER_API UCGNode_Action : public UCGNode
 	virtual FLinearColor ContextNodeTitleColor() override { return FLinearColor(1.f, 0.0f, 0.0f, 1.0f); };
 #endif
 
+#if WITH_EDITOR
+	virtual void CompileComplexNode(TArray<UCGNode*> OutputNodes, TArray<UCGNode*> InputNodes) override;
+#endif
+
 	virtual int DeterminePriority() override;
 
 	//evaluate the current graph for actions

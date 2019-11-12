@@ -14,7 +14,9 @@ class UComboGraph;
 FIGHTMAKER_API DECLARE_LOG_CATEGORY_EXTERN(CGNodeSystem, Log, All);
 
 class UBlackboardData;
+#if WITH_EDITOR
 class UEdGraphNode;
+#endif
 /**
  * 
  */
@@ -56,6 +58,9 @@ class FIGHTMAKER_API UCGNode : public UObject
 #endif
 #if WITH_EDITOR
 	virtual void SetChildNodes(TArray<UCGNode*>& children);
+	virtual void AddChildNodes(TArray<UCGNode*>& children);
+	virtual void AddChildNodes(UCGNode* child);
+	virtual void CompileComplexNode(TArray<UCGNode*> OutputNodes, TArray<UCGNode*> InputNodes);
 #endif
 	virtual int DeterminePriority();
 	virtual bool DetermineBranchHasAction();
