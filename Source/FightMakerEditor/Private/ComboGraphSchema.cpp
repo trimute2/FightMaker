@@ -16,7 +16,25 @@
 
 UEdGraphNode* FComboGraphSchemaAction_NewNode::PerformAction(class UEdGraph* ParentGraph, UEdGraphPin* FromPin, const FVector2D Location, bool bSelectNewNode)
 {
-	UEdGraphNode* ResultNode = NULL;
+	check(ComboNodeClass);
+
+	UComboGraph* ComboGraph = Cast<UComboGraphGraph>(ParentGraph)->GetComboGraph();
+	const FScopedTransaction Transaction(LOCTEXT("SoundCueEditorNewSoundNode", "Sound Cue Editor: New Sound Node"));
+	ParentGraph->Modify();
+	ComboGraph->Modify();
+
+	UCGNode* NewNode = ComboGraph->ConstructComboNode<UCGNode>(ComboNodeClass, bSelectNewNode);
+
+	NewNode->GraphNode->NodePosX = Location.X;
+	NewNode->GraphNode->NodePosY = Location.Y;
+
+	NewNode->GraphNode->AutowireNewNode(FromPin);
+	ComboGraph->PostEditChange();
+	ComboGraph->MarkPackageDirty();
+
+	return NewNode->GraphNode;
+
+	/*UEdGraphNode* ResultNode = NULL;
 
 	if (NodeTemplate != NULL)
 	{
@@ -42,7 +60,7 @@ UEdGraphNode* FComboGraphSchemaAction_NewNode::PerformAction(class UEdGraph* Par
 		NodeTemplate->SetFlags(RF_Transactional);
 
 		ResultNode = NodeTemplate;
-	}
+	}*/
 	/*
 	check(ComboNodeClass);
 
@@ -62,7 +80,7 @@ UEdGraphNode* FComboGraphSchemaAction_NewNode::PerformAction(class UEdGraph* Par
 
 	//ResultNode.Outer
 
-	return ResultNode;
+	//return ResultNode;
 }
 
 void FComboGraphSchemaAction_NewNode::AddReferencedObjects(FReferenceCollector& Collector)
@@ -130,8 +148,9 @@ void UComboGraphSchema::GetGraphContextActions(FGraphContextMenuBuilder& Context
 			}
 
 			TSharedPtr<FComboGraphSchemaAction_NewNode> NewNodeAction(new FComboGraphSchemaAction_NewNode(LOCTEXT("Combo Graph Action", "Base Combo Graph Node"), Name, AddToolTip, 0));
-			NewNodeAction->NodeTemplate = NewObject<UComboGraphNode_Base>(ContextMenuBuilder.OwnerOfTemporaries);
-			NewNodeAction->NodeTemplate->Node = NewObject<UCGNode>(NewNodeAction->NodeTemplate, Node);
+			NewNodeAction->ComboNodeClass = Node;
+			//NewNodeAction->NodeTemplate = NewObject<UComboGraphNode_Base>(ContextMenuBuilder.OwnerOfTemporaries);
+			//NewNodeAction->NodeTemplate->Node = NewObject<UCGNode>(NewNodeAction->NodeTemplate, Node);
 			ContextMenuBuilder.AddAction(NewNodeAction);
 
 			Visited.Add(Node);

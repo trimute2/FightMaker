@@ -48,6 +48,8 @@ public:
 	virtual void UpdateBlackBoardAsset(UEdGraph* ComboGraph) = 0;
 
 	virtual void CompileAssetNodesFromGraphNodes(UComboGraph* ComboGraph) = 0;
+
+	virtual void RemoveNullNodes(UComboGraph* ComboGraph) = 0;
 };
 #endif
 
@@ -65,7 +67,7 @@ public:
 #if WITH_EDITORONLY_DATA
 	/** EdGraph based representation of the ComboGraph */
 	UPROPERTY()
-	class UEdGraph* Graph;
+	class UEdGraph* ComboGraphGraph;
 
 	UPROPERTY()
 	uint32 LowestUnset;
@@ -122,6 +124,7 @@ public:
 	//used for creating newgraphs and stuff
 
 	virtual void PostInitProperties() override;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 	void CreateGraph();
 
@@ -138,6 +141,8 @@ public:
 	void MakeNodeRoot(class UCGNode* newRoot);
 
 #endif
+	virtual void PostLoad() override;
+
 	template<class T>
 	T* ConstructComboNode(TSubclassOf<UCGNode> ComboNodeClass = T::StaticClass(), bool bSelectNewNode = true) {
 		T* CGNode = NewObject<T>(this, ComboNodeClass, NAME_None, RF_Transactional);

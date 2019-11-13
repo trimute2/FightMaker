@@ -36,6 +36,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	FFMAction CurrentAction;
+
 public:	
 
 	FActionResponseDelegate OnSetAction;

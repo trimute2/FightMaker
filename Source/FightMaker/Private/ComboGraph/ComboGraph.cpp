@@ -39,11 +39,20 @@ void UComboGraph::PostInitProperties() {
 	//CacheAggregateValues();
 }
 
+void UComboGraph::AddReferencedObjects(UObject * InThis, FReferenceCollector & Collector)
+{
+	UComboGraph* This = CastChecked<UComboGraph>(InThis);
+
+	Collector.AddReferencedObject(This->ComboGraphGraph, This);
+
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 void UComboGraph::CreateGraph() {
-	if (Graph == nullptr) {
+	if (ComboGraphGraph == nullptr) {
 		//USoundCueGraph* SoundCueGraph = CastChecked<USoundCueGraph>(FBlueprintEditorUtils::CreateNewGraph(InSoundCue, NAME_None, USoundCueGraph::StaticClass(), USoundCueGraphSchema::StaticClass()));
 
-		Graph = UComboGraph::GetComboGraphModuleInterface()->CreateNewComboGraphGraph(this);
+		ComboGraphGraph = UComboGraph::GetComboGraphModuleInterface()->CreateNewComboGraphGraph(this);
 
 		//Graph = CastChecked<UEdGraph>(FBlueprintEditorUtils::CreateNewGraph(this, NAME_None, UComboGraphGraph::StaticClass(), UComboGraphSchema::StaticClass()));
 
@@ -55,7 +64,7 @@ void UComboGraph::SetUpNode(UCGNode* CGNode, bool bSelectNewNode)
 {
 	check(CGNode->GraphNode == NULL)
 
-	UComboGraph::GetComboGraphModuleInterface()->SetupAssetNode(Graph, CGNode, bSelectNewNode);
+	UComboGraph::GetComboGraphModuleInterface()->SetupAssetNode(ComboGraphGraph, CGNode, bSelectNewNode);
 }
 
 void UComboGraph::RemoveNodeFromBase(UCGNode * CGNode)
@@ -64,7 +73,7 @@ void UComboGraph::RemoveNodeFromBase(UCGNode * CGNode)
 }
 
 UEdGraph* UComboGraph::GetGraph() {
-	return Graph;
+	return ComboGraphGraph;
 }
 
 void UComboGraph::GetInputNames(TArray<FString>& out) {
@@ -108,6 +117,20 @@ void UComboGraph::MakeNodeRoot(UCGNode* newRoot)
 	RootNodes.AddUnique(newRoot);
 }
 
+void UComboGraph::PostLoad()
+{
+	Super::PostLoad();
+
+#if WITH_EDITOR
+	if (GIsEditor && !GetOutermost()->HasAnyPackageFlags(PKG_FilterEditorOnly)) {
+		if (ensure(ComboGraphGraph)) {
+			UComboGraph::GetComboGraphModuleInterface()->RemoveNullNodes(this);
+		}
+	}
+#endif
+
+}
+
 void UComboGraph::PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -120,7 +143,7 @@ void UComboGraph::PostEditChangeProperty(FPropertyChangedEvent & PropertyChanged
 	else {
 		UE_LOG(CGNodeSystem, Log, TEXT("updateing nodes"));
 	}
-	UComboGraph::GetComboGraphModuleInterface()->UpdateBlackBoardAsset(Graph);
+	UComboGraph::GetComboGraphModuleInterface()->UpdateBlackBoardAsset(ComboGraphGraph);
 	
 }
 #endif
@@ -138,18 +161,19 @@ void UComboGraph::Serialize(FStructuredArchive::FRecord Record)
 	Super::Serialize(Record);
 
 	if (UnderlyingArchive.UE4Ver() >= VER_UE4_COOKED_ASSETS_IN_EDITOR_SUPPORT) {
+		//FStripDataFlags StripFlags(Record.EnterField(FIELD_NAME_TEXT("SoundCueStripFlags")));
 		FStripDataFlags StripFlags(Record.EnterField(FIELD_NAME_TEXT("ComboGraphStripFlags")));
 #if WITH_EDITORONLY_DATA
 		if (!StripFlags.IsEditorDataStripped())
 		{
-			Record << NAMED_FIELD(Graph);
+			Record << NAMED_FIELD(ComboGraphGraph);
 		}
 #endif
 	}
 #if WITH_EDITOR
 	else
 	{
-		Record << NAMED_FIELD(Graph);
+		Record << NAMED_FIELD(ComboGraphGraph);
 	}
 #endif
 }

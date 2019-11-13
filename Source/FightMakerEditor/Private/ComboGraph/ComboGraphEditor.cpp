@@ -164,7 +164,7 @@ TSharedRef<SGraphEditor> FComboGraphEditor::CreateGraphEditorWidget() {
 		.IsEditable(true)
 		.IsEditable(true)
 		.Appearance(AppearanceInfo)
-		.GraphToEdit(ComboGraphBeingEdited->Graph)
+		.GraphToEdit(ComboGraphBeingEdited->GetGraph())
 		.GraphEvents(InEvents)
 		.AutoExpandActionMenu(true)
 		.ShowGraphStateOverlay(false);

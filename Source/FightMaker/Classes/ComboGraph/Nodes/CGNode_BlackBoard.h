@@ -34,6 +34,6 @@ protected:
 	FString StringValue;
 
 	/** operation type */
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 	uint8 OperationType;
 };

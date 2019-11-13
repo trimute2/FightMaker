@@ -59,8 +59,8 @@ public:
 		//ComboGraph->RootNode.
 
 		//determine if nodes can be constructed normally
-		for (int32 NodeIndex = 0; NodeIndex < ComboGraph->Graph->Nodes.Num(); ++NodeIndex) {
-			UComboGraphNode_Base* graphNode = Cast<UComboGraphNode_Base>(ComboGraph->Graph->Nodes[NodeIndex]);
+		for (int32 NodeIndex = 0; NodeIndex < ComboGraph->ComboGraphGraph->Nodes.Num(); ++NodeIndex) {
+			UComboGraphNode_Base* graphNode = Cast<UComboGraphNode_Base>(ComboGraph->ComboGraphGraph->Nodes[NodeIndex]);
 			if (graphNode)
 			{
 				//check if this is a leaf node
@@ -120,6 +120,19 @@ public:
 		ComboGraph->RootNode->SetChildNodes(RootNodes);
 		ComboGraph->RootNode->PostEditChange();
 
+	}
+
+	virtual void RemoveNullNodes(UComboGraph* ComboGraph) {
+		// Deal with SoundNode types being removed - iterate in reverse as nodes may be removed
+		for (int32 idx = ComboGraph->ComboGraphGraph->Nodes.Num() - 1; idx >= 0; --idx)
+		{
+			UComboGraphNode_Base* Node = Cast<UComboGraphNode_Base>(ComboGraph->ComboGraphGraph->Nodes[idx]);
+
+			if (Node && Node->Node == NULL)
+			{
+				FBlueprintEditorUtils::RemoveNode(NULL, Node, true);
+			}
+		}
 	}
 };
 
