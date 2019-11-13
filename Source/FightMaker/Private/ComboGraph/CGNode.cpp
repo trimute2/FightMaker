@@ -77,6 +77,13 @@ bool UCGNode::DetermineBranchHasAction() {
 	return false;
 }
 
+void UCGNode::BuildCallbacks(FFMAction & ActionOutput)
+{
+	for (UCGNode* Child : ChildNodes) {
+		Child->BuildCallbacks(ActionOutput);
+	}
+}
+
 bool UCGNode::ShouldEvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
 	return (bBranchHasAction && ActionOutput.ActionInfo.Priority <= priority);
 }

@@ -18,6 +18,8 @@ class FIGHTMAKER_API UCGNode_Condition : public UCGNode
 	virtual FText ContextNodeTitle() override { return FText::FromString(TEXT("Condition")); };
 #endif
 
+	virtual void BuildCallbacks(FFMAction & ActionOutput) override;
+
 	//evaluate the current graph for actions
 	virtual void EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) override;
 	
@@ -31,6 +33,7 @@ class FIGHTMAKER_API UCGNode_Condition : public UCGNode
 	virtual void RollbackCondition(FFMActionInfo ActionInfo, class UBlackboardComponent* BlackBoardInfo, class AActor* Actor);
 
 	//the action taken to consume the condition
+	UFUNCTION()
 	virtual void ConfirmCondition(FFMActionInfo ActionInfo, class UBlackboardComponent* BlackBoardInfo, class AActor* Actor);
 
 };

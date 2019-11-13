@@ -2,6 +2,7 @@
 #include "ComboGraph/Nodes/CGNode_BlackBoard.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType.h"
+#include "Engine/Engine.h"
 
 
 #define LOCTEXT_NAMESPACE "BlackBoardNode"
@@ -50,6 +51,11 @@ bool UCGNode_BlackBoard::ConditionCheck(UBlackboardComponent& blackboard)
 
 	return bResult;
 	//return false;
+}
+
+void UCGNode_BlackBoard::ConfirmCondition(FFMActionInfo ActionInfo, UBlackboardComponent * BlackBoardInfo, AActor * Actor)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
 }
 
 #undef LOCTEXT_NAMESPACE

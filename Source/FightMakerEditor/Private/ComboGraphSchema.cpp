@@ -59,6 +59,9 @@ UEdGraphNode* FComboGraphSchemaAction_NewNode::PerformAction(class UEdGraph* Par
 
 	return n;
 	*/
+
+	//ResultNode.Outer
+
 	return ResultNode;
 }
 

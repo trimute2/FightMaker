@@ -207,3 +207,12 @@ TSharedPtr<class INameValidatorInterface> UComboGraphNode_Base::MakeNameValidato
 	UE_LOG(CGGraphNodeSystem, Warning, TEXT("MakeNameValidator called."));
 	return NULL;
 }
+
+void UComboGraphNode_Base::PostLoad()
+{
+	Super::PostLoad();
+
+	if (Node) {
+		Node->GraphNode = this;
+	}
+}

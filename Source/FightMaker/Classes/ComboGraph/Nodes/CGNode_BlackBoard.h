@@ -17,6 +17,8 @@ class FIGHTMAKER_API UCGNode_BlackBoard : public UCGNode_BlackBoardBase
 public:
 	virtual bool ConditionCheck(class UBlackboardComponent& blackboard) override;
 
+	virtual void ConfirmCondition(FFMActionInfo ActionInfo, UBlackboardComponent * BlackBoardInfo, AActor * Actor) override;
+
 protected:
 
 	/** value for arithmetic operations */

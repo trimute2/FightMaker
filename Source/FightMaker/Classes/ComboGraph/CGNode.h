@@ -64,6 +64,7 @@ class FIGHTMAKER_API UCGNode : public UObject
 #endif
 	virtual int DeterminePriority();
 	virtual bool DetermineBranchHasAction();
+	virtual void BuildCallbacks(FFMAction& ActionOutput);
 	virtual void Serialize(FArchive& Ar) override;
 
 protected:

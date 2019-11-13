@@ -48,6 +48,9 @@ public:
 	virtual void OnRenameNode(const FString& NewName) override;
 	virtual TSharedPtr<class INameValidatorInterface> MakeNameValidator() const override;
 
+	virtual void PostLoad() override;
+
+
 	UPROPERTY(Instanced)
 	UCGNode* Node;
 

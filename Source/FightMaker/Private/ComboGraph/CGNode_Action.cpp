@@ -15,6 +15,7 @@ UCGNode_Action::UCGNode_Action(const class FObjectInitializer& ObjectInitializer
 }
 
 #if WITH_EDITOR
+//thinking on it this actually needs to be used for every branch, not just for the action nodes
 void UCGNode_Action::CompileComplexNode(TArray<UCGNode*> OutputNodes, TArray<UCGNode*> InputNodes)
 {
 	//check that this is in fact a complex compile
@@ -68,6 +69,14 @@ int UCGNode_Action::DeterminePriority()
 	BranchPriority = Super::DeterminePriority();
 	priority = Action.ActionInfo.Priority;
 	return priority;
+}
+
+void UCGNode_Action::BuildCallbacks(FFMAction & ActionOutput)
+{
+	FFMAction copy;
+	Super::BuildCallbacks(copy);
+	Action = ActionOutput;
+	Action.ActionInfo = ActionInfo;
 }
 
 void UCGNode_Action::EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
