@@ -9,7 +9,7 @@ UComboGraphComponent::UComboGraphComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
+	bWantsInitializeComponent = true;
 	// ...
 }
 
@@ -20,9 +20,6 @@ void UComboGraphComponent::InitializeComponent()
 	AActor* Owner = GetOwner();
 	if (Owner) {
 		BlackboardComp = Owner->FindComponentByClass<UBlackboardComponent>();
-		if (!BlackboardComp) {
-			BlackboardComp = NewObject<UBlackboardComponent>(Owner, TEXT("BlackBoardComp"));
-		}
 	}
 }
 
@@ -50,6 +47,16 @@ void UComboGraphComponent::BeginPlay()
 	
 }
 
+void UComboGraphComponent::TestGraph()
+{
+	if (ComboGraphAsset && BlackboardComp) {
+		FFMAction response;
+		response = ComboGraphAsset->Evaluate(BlackboardComp);
+		if (response.ConfirmAction.IsBound()) {
+			response.ConfirmAction.Broadcast(response.ActionInfo,BlackboardComp,GetOwner());
+		}
+	}
+}
 
 // Called every frame
 void UComboGraphComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

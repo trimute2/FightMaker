@@ -4,6 +4,7 @@
 #include "ComboGraph/CGNode_Action.h"
 #include "ComboGraph/CGNode_Branching.h"
 #include "ComboGraph/CGNode_Condition.h"
+#include "Engine\Engine.h"
 
 #define LOCTEXT_NAMESPACE "ActionNode"
 UCGNode_Action::UCGNode_Action(const class FObjectInitializer& ObjectInitializer)
@@ -80,6 +81,8 @@ void UCGNode_Action::BuildCallbacks(FFMAction & ActionOutput)
 }
 
 void UCGNode_Action::EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
-	ActionOutput = Action;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
+	ActionOutput.ActionInfo = ActionInfo;
+	//ActionOutput = Action;
 }
 #undef LOCTEXT_NAMESPACE

@@ -14,4 +14,8 @@ class FIGHTMAKER_API UCGNode_Branching : public UCGNode
 {
 	GENERATED_BODY()
 	
+public:
+
+	virtual void EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) override;
+
 };

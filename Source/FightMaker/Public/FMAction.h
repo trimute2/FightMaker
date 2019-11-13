@@ -9,7 +9,7 @@ USTRUCT(BlueprintType)
 struct FFMActionInfo {
 	GENERATED_USTRUCT_BODY();
 
-	FFMActionInfo() : AnimSpeed(1.0f)
+	FFMActionInfo() : AnimSpeed(1.0f), Priority(0)
 	{}
 
 	UPROPERTY(EditInstanceOnly, Category = Animation)

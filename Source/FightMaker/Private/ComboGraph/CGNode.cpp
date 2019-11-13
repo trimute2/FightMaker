@@ -85,7 +85,7 @@ void UCGNode::BuildCallbacks(FFMAction & ActionOutput)
 }
 
 bool UCGNode::ShouldEvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
-	return (bBranchHasAction && ActionOutput.ActionInfo.Priority <= priority);
+	return (/*bBranchHasAction &&*/ ActionOutput.ActionInfo.Priority <= priority);
 }
 
 void UCGNode::Serialize(FArchive& Ar) {
