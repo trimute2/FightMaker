@@ -18,7 +18,7 @@ void UCGNode_Condition::BuildCallbacks(FFMAction & ActionOutput)
 
 void UCGNode_Condition::EvaluateNode(FFMAction & ActionOutput, UBlackboardComponent * blackboard)
 {
-	if (priority>=ActionOutput.ActionInfo.Priority &&ConditionCheck(*blackboard)) {
+	if (ConditionCheck(*blackboard)) {
 		FFMAction copy;
 		copy = ActionOutput;
 		copy.ConfirmAction.AddDynamic(this, &UCGNode_Condition::ConfirmCondition);
