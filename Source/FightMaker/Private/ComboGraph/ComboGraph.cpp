@@ -164,7 +164,7 @@ void UComboGraph::Serialize(FStructuredArchive::FRecord Record)
 		//FStripDataFlags StripFlags(Record.EnterField(FIELD_NAME_TEXT("SoundCueStripFlags")));
 		FStripDataFlags StripFlags(Record.EnterField(FIELD_NAME_TEXT("ComboGraphStripFlags")));
 #if WITH_EDITORONLY_DATA
-		if (!StripFlags.IsEditorDataStripped())
+		if (!StripFlags.IsEditorDataStripped() && ComboGraphGraph != NULL)
 		{
 			Record << NAMED_FIELD(ComboGraphGraph);
 		}
