@@ -21,9 +21,9 @@ FFMAction UComboGraph::Evaluate(UBlackboardComponent * blackboard)
 {
 	FFMAction OutputAction;
 	RootNode->Evaluate(OutputAction, blackboard);
-	for (UCGNode* node : RootNodes) {
+	/*for (UCGNode* node : RootNodes) {
 		node->Evaluate(OutputAction, blackboard);
-	}
+	}*/
 	return OutputAction;
 }
 
@@ -176,4 +176,9 @@ void UComboGraph::Serialize(FStructuredArchive::FRecord Record)
 		Record << NAMED_FIELD(ComboGraphGraph);
 	}
 #endif
+}
+
+void UComboGraph::Refresh()
+{
+	RootNode->RefreshAsset();
 }

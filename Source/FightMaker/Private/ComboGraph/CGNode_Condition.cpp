@@ -19,12 +19,13 @@ void UCGNode_Condition::BuildCallbacks(FFMAction & ActionOutput)
 void UCGNode_Condition::EvaluateNode(FFMAction & ActionOutput, UBlackboardComponent * blackboard)
 {
 	if (ConditionCheck(*blackboard)) {
-		FFMAction copy;
-		copy = ActionOutput;
-		copy.ConfirmAction.AddDynamic(this, &UCGNode_Condition::ConfirmCondition);
+		//FFMAction copy;
+		//copy = ActionOutput;
+		//copy.ConfirmAction.AddDynamic(this, &UCGNode_Condition::ConfirmCondition);
 		for (UCGNode* node : ChildNodes) {
-			node->EvaluateNode(copy, blackboard);
+			node->EvaluateNode(ActionOutput, blackboard);
 		}
+		ActionOutput.ConfirmAction.AddDynamic(this, &UCGNode_Condition::ConfirmCondition);
 	}
 }
 

@@ -81,7 +81,8 @@ void UCGNode_Action::BuildCallbacks(FFMAction & ActionOutput)
 }
 
 void UCGNode_Action::EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
+ 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
+	ActionOutput.ConfirmAction.Clear();
 	ActionOutput.ActionInfo = ActionInfo;
 	//ActionOutput = Action;
 }

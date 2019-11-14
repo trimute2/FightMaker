@@ -67,6 +67,8 @@ class FIGHTMAKER_API UCGNode : public UObject
 	virtual void BuildCallbacks(FFMAction& ActionOutput);
 	virtual void Serialize(FArchive& Ar) override;
 
+	void RefreshAsset();
+
 protected:
 
 	//The highest priority action that is on this node path

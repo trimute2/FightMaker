@@ -105,3 +105,11 @@ void UCGNode::Serialize(FArchive& Ar) {
 	}
 #endif
 }
+
+void UCGNode::RefreshAsset()
+{
+	InitializeFromAsset(*CGAsset);
+	for (UCGNode* child : ChildNodes) {
+		child->RefreshAsset();
+	}
+}

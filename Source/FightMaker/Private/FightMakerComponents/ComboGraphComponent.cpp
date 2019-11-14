@@ -28,12 +28,18 @@ bool UComboGraphComponent::InitializeComboGraph(UComboGraph & NewAsset)
 	if (&NewAsset == ComboGraphAsset) {
 		return false;
 	}
+	//might brak this up into more than one function like behavior tree component
+	if (NewAsset.BlackboardAsset && BlackboardComp && !BlackboardComp->IsCompatibleWith(NewAsset.BlackboardAsset)) {
+		return false;
+	}
 
 	ComboGraphAsset = &NewAsset;
 
-	if (BlackboardComp) {
+	ComboGraphAsset->Refresh();
+
+	/*if (BlackboardComp) {
 		BlackboardComp->InitializeBlackboard(*ComboGraphAsset->BlackboardAsset);
-	}
+	}*/
 
 	return false;
 }

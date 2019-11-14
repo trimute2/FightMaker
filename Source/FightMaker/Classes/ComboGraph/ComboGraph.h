@@ -181,7 +181,8 @@ private:
 
 #endif
 public:
-		virtual void Serialize(FStructuredArchive::FRecord Record) override;
+	virtual void Serialize(FStructuredArchive::FRecord Record) override;
 
+	void Refresh();
 	
 };
