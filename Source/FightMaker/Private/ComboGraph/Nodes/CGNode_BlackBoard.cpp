@@ -55,7 +55,13 @@ bool UCGNode_BlackBoard::ConditionCheck(UBlackboardComponent& blackboard)
 
 void UCGNode_BlackBoard::ConfirmCondition(FFMActionInfo ActionInfo, UBlackboardComponent * BlackBoardInfo, AActor * Actor)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
+	UBlackboardKeyType* KeyCDO = BlackboardKey.SelectedKeyType->GetDefaultObject<UBlackboardKeyType>();
+	uint8* KeyMemory = BlackBoardInfo->GetKeyRawData(BlackboardKey.GetSelectedKeyID());
+	if (ensure(KeyCDO != NULL) && (KeyMemory != NULL))
+	{
+		KeyCDO->WrappedClear(*BlackBoardInfo, KeyMemory);
+	}
 }
 
 #undef LOCTEXT_NAMESPACE

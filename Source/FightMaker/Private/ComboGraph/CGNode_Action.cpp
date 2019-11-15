@@ -82,8 +82,18 @@ void UCGNode_Action::BuildCallbacks(FFMAction & ActionOutput)
 
 void UCGNode_Action::EvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
  	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
-	ActionOutput.ConfirmAction.Clear();
-	ActionOutput.ActionInfo = ActionInfo;
+	if (ActionOutput.FirstEvaluation) {
+		for (UCGNode* child : ChildNodes) {
+			child->Evaluate(ActionOutput, blackboard);
+		}
+	}
+	else {
+		ActionOutput.ConfirmAction.Clear();
+		ActionOutput.UseableResponse = true;
+		ActionOutput.ActionInfo = ActionInfo;
+		ActionOutput.NextIndex = GetNodeIndex();
+		//ActionOutput.EvaluatedNext = this;
+	}
 	//ActionOutput = Action;
 }
 #undef LOCTEXT_NAMESPACE

@@ -84,6 +84,11 @@ void UCGNode::BuildCallbacks(FFMAction & ActionOutput)
 	}
 }
 
+int UCGNode::GetNodeIndex()
+{
+	return CGAsset->FindNode(this);
+}
+
 bool UCGNode::ShouldEvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard) {
 	return (/*bBranchHasAction &&*/ ActionOutput.ActionInfo.Priority <= priority);
 }

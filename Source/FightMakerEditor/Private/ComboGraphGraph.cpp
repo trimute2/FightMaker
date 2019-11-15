@@ -68,16 +68,16 @@ public:
 				if (OutputPins[0]->LinkedTo.Num() == 0) {
 					leafNodes.Add(graphNode);
 				}
-				if (graphNode->bComplexCompile) {
+				/*if (graphNode->bComplexCompile) {
 					ComplexCompile.Add(graphNode);
 				}
-				else if (graphNode->Node) {
+				else */if (graphNode->Node) {
 					//attatch nodes together
 					ChildNodes.Empty();
 					for (UEdGraphPin * OutputPin : OutputPins) {
 						for (UEdGraphPin * linkedTo : OutputPin->LinkedTo) {
 							UComboGraphNode_Base * GraphChildNode = Cast<UComboGraphNode_Base>(linkedTo->GetOwningNode());
-							if (GraphChildNode && !GraphChildNode->bComplexCompile && GraphChildNode->Node) {
+							if (GraphChildNode /*&& !GraphChildNode->bComplexCompile */&& GraphChildNode->Node) {
 								ChildNodes.Add(GraphChildNode->Node);
 							}
 						}

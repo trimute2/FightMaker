@@ -57,10 +57,24 @@ void UComboGraphComponent::TestGraph()
 {
 	if (ComboGraphAsset && BlackboardComp) {
 		FFMAction response;
-		response = ComboGraphAsset->Evaluate(BlackboardComp);
+		response.FirstEvaluation = true;
+		/*if (CurrentAction.UseableResponse && CurrentAction.EvaluatedNext) {
+			CurrentAction.EvaluatedNext->Evaluate(response, BlackboardComp);
+		}*/
+		ComboGraphAsset->Evaluate(response, BlackboardComp,CurrentAction.NextIndex);
 		if (response.ConfirmAction.IsBound()) {
 			response.ConfirmAction.Broadcast(response.ActionInfo,BlackboardComp,GetOwner());
 		}
+		CurrentAction = response;
+		OnSetAction.ExecuteIfBound(response.ActionInfo);
+	}
+}
+
+void UComboGraphComponent::EmptyCurrentAction(UAnimMontage* Montage, bool bInterrupted)
+{
+	if (!bInterrupted) {
+		CurrentAction.UseableResponse = false;
+		CurrentAction.NextIndex = -1;
 	}
 }
 

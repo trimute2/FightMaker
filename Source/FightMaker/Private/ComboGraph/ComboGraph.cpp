@@ -17,13 +17,20 @@ UComboGraph::UComboGraph(const class FObjectInitializer& ObjectInitializer)
 	
 }
 
-FFMAction UComboGraph::Evaluate(UBlackboardComponent * blackboard)
+FFMAction UComboGraph::Evaluate(FFMAction& OutputAction, UBlackboardComponent * blackboard, int FirstEvalIndex)
 {
-	FFMAction OutputAction;
+	if (FirstEvalIndex >= 0) {
+		BaseNodes[FirstEvalIndex]->Evaluate(OutputAction, blackboard);
+	}
+
 	RootNode->Evaluate(OutputAction, blackboard);
 	/*for (UCGNode* node : RootNodes) {
 		node->Evaluate(OutputAction, blackboard);
 	}*/
+	if (BaseNodes.Contains(OutputAction.EvaluatedNext)) {
+		BaseNodes.Find(OutputAction.EvaluatedNext);
+	}
+
 	return OutputAction;
 }
 
@@ -148,6 +155,11 @@ void UComboGraph::PostEditChangeProperty(FPropertyChangedEvent & PropertyChanged
 }
 #endif
 
+int UComboGraph::FindNode(UCGNode * node)
+{
+	return BaseNodes.Find(node);
+}
+
 void UComboGraph::Serialize(FStructuredArchive::FRecord Record)
 {
 	FArchive& UnderlyingArchive = Record.GetUnderlyingArchive();
@@ -181,4 +193,5 @@ void UComboGraph::Serialize(FStructuredArchive::FRecord Record)
 void UComboGraph::Refresh()
 {
 	RootNode->RefreshAsset();
+	RootNode->DeterminePriority();
 }

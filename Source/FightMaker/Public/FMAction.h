@@ -32,10 +32,19 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FActionConditionResponseDelegate,
 
 USTRUCT(BlueprintType)
 struct FFMAction {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
+
+	FFMAction() : NextIndex(-1)
+	{}
 
 	UPROPERTY(EditInstanceOnly)
 	FFMActionInfo ActionInfo; //the info that describes the attack
+
+	UPROPERTY()
+	bool UseableResponse;
+
+	UPROPERTY()
+	bool FirstEvaluation;
 
 	UPROPERTY(BlueprintAssignable)
 	FActionConditionResponseDelegate RegisterAction; //delegates called to register the attack
@@ -48,5 +57,8 @@ struct FFMAction {
 
 	UPROPERTY()
 	UCGNode * EvaluatedNext;
+
+	UPROPERTY()
+	int NextIndex;
 };
 

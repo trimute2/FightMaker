@@ -18,6 +18,7 @@ void UCGNode_Condition::BuildCallbacks(FFMAction & ActionOutput)
 
 void UCGNode_Condition::EvaluateNode(FFMAction & ActionOutput, UBlackboardComponent * blackboard)
 {
+	ActionOutput.FirstEvaluation = false;
 	if (ConditionCheck(*blackboard)) {
 		//FFMAction copy;
 		//copy = ActionOutput;

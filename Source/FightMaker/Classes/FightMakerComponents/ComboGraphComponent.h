@@ -8,7 +8,7 @@
 #include "FMAction.h"
 #include "ComboGraphComponent.generated.h"
 
-DECLARE_DELEGATE_OneParam(FActionResponseDelegate, FFMAction);
+DECLARE_DELEGATE_OneParam(FActionResponseDelegate, FFMActionInfo);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class FIGHTMAKER_API UComboGraphComponent : public UActorComponent
@@ -43,6 +43,8 @@ public:
 	FActionResponseDelegate OnSetAction;
 
 	void TestGraph();
+
+	void EmptyCurrentAction(UAnimMontage* Montage, bool bInterrupted);
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

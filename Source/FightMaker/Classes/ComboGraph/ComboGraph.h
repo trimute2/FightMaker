@@ -79,7 +79,7 @@ public:
 	UBlackboardData* BlackboardAsset;
 
 	//MoveData evaluate(blackboard)
-	FFMAction Evaluate(class UBlackboardComponent* blackboard);
+	FFMAction Evaluate(FFMAction& OutputAction, class UBlackboardComponent* blackboard, int FirstEvalIndex);
 
 
 	UPROPERTY()
@@ -173,7 +173,7 @@ public:
 
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
 
-
+	int FindNode(UCGNode* node);
 
 private:
 

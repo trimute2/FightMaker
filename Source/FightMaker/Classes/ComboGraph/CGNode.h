@@ -82,6 +82,8 @@ protected:
 	UPROPERTY()
 	TArray<UCGNode*> ChildNodes;
 
+	int GetNodeIndex();
+
 	virtual bool ShouldEvaluateNode(FFMAction& ActionOutput, class UBlackboardComponent* blackboard);
 
 private:
