@@ -14,6 +14,7 @@ public class FightMakerEditor : ModuleRules
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
+				//"AIModule"
 			}
 			);
 				
@@ -21,6 +22,7 @@ public class FightMakerEditor : ModuleRules
 		PrivateIncludePaths.AddRange(
 			new string[] {
 				"AssetTools",
+				//"AIModule"
 			}
 			);
 			
@@ -42,7 +44,8 @@ public class FightMakerEditor : ModuleRules
 				"PropertyEditor",
 				"UnrealEd",
 				"GraphEditor",
-				"AIModule"
+				"AIModule",
+				"AIGraph"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

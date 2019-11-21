@@ -1,4 +1,4 @@
-
+#include "FightMakerEditorModule.h"
 #include "ComboGraphAssetTypeActions.h"
 #include "ComboGraph/ComboGraphEditor.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
@@ -28,6 +28,8 @@ UClass* FComboGraphAssetTypeActions::GetSupportedClass() const
 
 void FComboGraphAssetTypeActions::OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<class IToolkitHost> EditWithinLevelEditor)
 {
+	FFightMakerEditorModule& FightMakerEditorModule = FModuleManager::GetModuleChecked<FFightMakerEditorModule>("FightMakerEditor");
+	FightMakerEditorModule.InitClassCache();
 	EToolkitMode::Type Mode = EditWithinLevelEditor.IsValid()
 		? EToolkitMode::WorldCentric
 		: EToolkitMode::Standalone;

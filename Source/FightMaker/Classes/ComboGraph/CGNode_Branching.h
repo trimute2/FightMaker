@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(meta=(HiddenNode))
 class FIGHTMAKER_API UCGNode_Branching : public UCGNode
 {
 	GENERATED_BODY()

@@ -8,6 +8,10 @@
 #include "ComboGraph/CGNode_Action.h"
 #include "ComboGraph/CGNode_Condition.h"
 #include "Framework/Commands/GenericCommands.h"
+#include "Kismet2/KismetEditorUtilities.h"
+#include "FightMakerEditorModule.h"
+#include "AIGraphTypes.h"
+//#include "AssetRegistryModule.h"
 #include "ComboGraphGraph.h"
 #include "ComboGraph/ComboGraph.h"
 #include "ScopedTransaction.h"
@@ -129,12 +133,65 @@ bool UComboGraphSchema::ConditionLoopTest(const UEdGraphPin * InputPin, const UE
 }
 
 void UComboGraphSchema::GetGraphContextActions(FGraphContextMenuBuilder& ContextMenuBuilder) const {
-	TSet<TSubclassOf<UCGNode> > Visited;
+	//TSet<TSubclassOf<UCGNode> > Visited;
 
 	const FText AddToolTip = LOCTEXT("NewComboGraphNodeTooltip", "Add node here");
 
-	for (TObjectIterator<UClass> It; It; ++It) {
-		if (It->IsChildOf<UCGNode>() &&!It->HasAnyClassFlags(CLASS_Abstract) && !Visited.Contains(*It)) {
+	FFightMakerEditorModule& FightMakerEditorModule = FModuleManager::GetModuleChecked<FFightMakerEditorModule>("FightMakerEditor");
+	FGraphNodeClassHelper* ClassCache = FightMakerEditorModule.GetClassCache().Get();
+	TArray <FGraphNodeClassData> ClassData;
+
+	ClassCache->GatherClasses(UCGNode::StaticClass(), ClassData);
+
+	for (FGraphNodeClassData gncd : ClassData) {
+
+		TSubclassOf<UCGNode> Node = gncd.GetClass();
+
+
+		FText Name = Node.GetDefaultObject()->ContextMenuName;
+
+		if (Name.IsEmpty())
+		{
+			FString Title = Node->GetName();
+			Title.RemoveFromEnd("_C");
+			Name = FText::FromString(Title);
+		}
+
+		TSharedPtr<FComboGraphSchemaAction_NewNode> NewNodeAction(new FComboGraphSchemaAction_NewNode(LOCTEXT("Combo Graph Action", "Base Combo Graph Node"), Name, AddToolTip, 0));
+		NewNodeAction->ComboNodeClass = Node;
+		//NewNodeAction->NodeTemplate = NewObject<UComboGraphNode_Base>(ContextMenuBuilder.OwnerOfTemporaries);
+		//NewNodeAction->NodeTemplate->Node = NewObject<UCGNode>(NewNodeAction->NodeTemplate, Node);
+		ContextMenuBuilder.AddAction(NewNodeAction);
+
+		//Visited.Add(Node);
+	}
+
+	//bassed off of http://kantandev.com/articles/finding-all-classes-blueprints-with-a-given-base
+	/*for (TObjectIterator<UClass> It; It; ++It) {
+		if (!It->IsNative() || !It->IsChildOf<UCGNode>() || It->HasAnyClassFlags(CLASS_Abstract)
+			|| It->HasMetaData(TEXT("HiddenNode"))) {
+			continue;
+		}
+		TSubclassOf<UCGNode> Node = *It;
+		if (FKismetEditorUtilities::IsClassABlueprintSkeleton(Node)) {
+			continue;
+		}
+		FText Name = Node.GetDefaultObject()->ContextMenuName;
+
+		if (Name.IsEmpty())
+		{
+			FString Title = Node->GetName();
+			Title.RemoveFromEnd("_C");
+			Name = FText::FromString(Title);
+		}
+
+		TSharedPtr<FComboGraphSchemaAction_NewNode> NewNodeAction(new FComboGraphSchemaAction_NewNode(LOCTEXT("Combo Graph Action", "Base Combo Graph Node"), Name, AddToolTip, 0));
+		NewNodeAction->ComboNodeClass = Node;
+		ContextMenuBuilder.AddAction(NewNodeAction);
+
+		//Visited.Add(Node);
+		/*if (It->IsChildOf<UCGNode>() &&!It->HasAnyClassFlags(CLASS_Abstract) && !Visited.Contains(*It)
+			&& !(It->HasAnyClassFlags(CLASS_Native) && It->HasMetaData(TEXT("HiddenNode")))) {
 
 			TSubclassOf<UCGNode> Node = *It;
 
@@ -154,8 +211,12 @@ void UComboGraphSchema::GetGraphContextActions(FGraphContextMenuBuilder& Context
 			ContextMenuBuilder.AddAction(NewNodeAction);
 
 			Visited.Add(Node);
-		}
-	}
+		}*/
+	//}
+
+	/*FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked< FAssetRegistryModule >(FName("AssetRegistry"));
+	IAssetRegistry& AssetRegistry = AssetRegistryModule.Get();*/
+
 	Super::GetGraphContextActions(ContextMenuBuilder);
 }
 

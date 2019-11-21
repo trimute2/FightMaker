@@ -9,7 +9,7 @@ UCGNode_BlueprintBase::UCGNode_BlueprintBase(const class FObjectInitializer& Obj
 
 	UClass* StopAtClass = UCGNode_BlueprintBase::StaticClass();
 	//find a way to copy the 
-	//ConditionCheckImplemented = BlueprintNodeHelpers::HasBlueprintFunction(TEXT("PerformConditionCheck"), *this, StopAtClass);
+	ConditionCheckImplemented = BlueprintNodeHelpers::HasBlueprintFunction(TEXT("PerformConditionCheck"), *this, *StopAtClass);
 }
 
 bool UCGNode_BlueprintBase::ConditionCheck(UBlackboardComponent& blackboard)
