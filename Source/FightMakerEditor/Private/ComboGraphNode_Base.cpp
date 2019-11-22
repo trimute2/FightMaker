@@ -119,7 +119,7 @@ bool UComboGraphNode_Base::CanCreateUnderSpecifiedSchema(const UEdGraphSchema * 
 FText UComboGraphNode_Base::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
 	if (Node) {
-		return Node->ContextNodeTitle();
+		return FText::FromString(Node->ContextNodeTitle());
 	}
 	return FText::FromString(TEXT("TEST"));
 }

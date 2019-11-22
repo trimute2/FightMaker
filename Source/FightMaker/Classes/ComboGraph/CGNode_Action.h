@@ -30,11 +30,11 @@ class FIGHTMAKER_API UCGNode_Action : public UCGNode
 
 #if WITH_EDITORONLY_DATA
 	//The nodes title
-	virtual FText ContextNodeTitle() override {
+	virtual FString ContextNodeTitle() override {
 		if (ActionName.IsEmpty()) {
-			return FText::FromString(TEXT("Action"));
+			return "Action";
 		}
-		return FText::FromString(ActionName);
+		return ActionName;
 	};
 
 	virtual FLinearColor ContextNodeTitleColor() override { return FLinearColor(1.f, 0.0f, 0.0f, 1.0f); };

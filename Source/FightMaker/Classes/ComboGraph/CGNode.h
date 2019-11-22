@@ -6,6 +6,7 @@
 #include "UObject/NoExportTypes.h"
 #include "FMAction.h"
 //#include "ComboGraph.h"
+#include "ComboGraph/ComboGraphUtils.h"
 #include "CGNode.generated.h"
 
 class UComboGraph;
@@ -44,7 +45,10 @@ class FIGHTMAKER_API UCGNode : public UObject
 	UPROPERTY()
 	FText ContextMenuName;
 
-	virtual FText ContextNodeTitle() { return FText::FromString(TEXT("TEST")); };
+	UPROPERTY()
+	FString NodeName;
+
+	virtual FString ContextNodeTitle() { return NodeName.Len() ? NodeName : UComboGraphUtils::GetShortTypeNameCG(this); };
 	virtual FLinearColor ContextNodeTitleColor() { return FLinearColor(0.4f, 0.62f, 1.0f); };
 
 	UPROPERTY()

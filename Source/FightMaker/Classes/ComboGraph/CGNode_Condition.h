@@ -15,7 +15,7 @@ class FIGHTMAKER_API UCGNode_Condition : public UCGNode
 	GENERATED_UCLASS_BODY()
 
 #if WITH_EDITORONLY_DATA
-	virtual FText ContextNodeTitle() override { return FText::FromString(TEXT("Condition")); };
+	//virtual FText ContextNodeTitle() override { return FText::FromString(TEXT("Condition")); };
 #endif
 
 	virtual void BuildCallbacks(FFMAction & ActionOutput) override;
