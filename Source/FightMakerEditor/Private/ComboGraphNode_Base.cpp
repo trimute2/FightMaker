@@ -33,6 +33,21 @@ void UComboGraphNode_Base::AllocateDefaultPins() {
 	CreateOutputPins();
 }
 
+void UComboGraphNode_Base::AutowireNewNode(UEdGraphPin * FromPin)
+{
+	if (FromPin) {
+		const UEdGraphSchema* Schema = GetSchema();
+		for (int32 i = 0; i < Pins.Num(); i++) {
+			UEdGraphPin* pin = Pins[i];
+			ECanCreateConnectionResponse ConnectResponse = Schema->CanCreateConnection(pin, FromPin).Response;
+			if (ConnectResponse == ECanCreateConnectionResponse::CONNECT_RESPONSE_MAKE) {
+				Schema->TryCreateConnection(pin, FromPin);
+				break;
+			}
+		}
+	}
+}
+
 void UComboGraphNode_Base::MakeRootNode()
 {
 	//UE_LOG(CGGraphNodeSystem, Log, TEXT("Make root called."));

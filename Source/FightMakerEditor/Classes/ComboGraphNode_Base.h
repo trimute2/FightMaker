@@ -38,6 +38,7 @@ public:
 	// UEdGraphNode interface.
 
 	virtual void AllocateDefaultPins() override;
+	virtual void AutowireNewNode(UEdGraphPin* FromPin) override;
 	virtual void PostPlacedNewNode() override;
 	virtual bool CanCreateUnderSpecifiedSchema(const UEdGraphSchema* Schema) const override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
