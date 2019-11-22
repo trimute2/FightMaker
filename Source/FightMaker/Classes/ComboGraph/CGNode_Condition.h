@@ -27,9 +27,11 @@ class FIGHTMAKER_API UCGNode_Condition : public UCGNode
 	virtual bool ConditionCheck(class UBlackboardComponent& blackboard) { return false; };
 
 	//the action taken to register the condition
+	UFUNCTION()
 	virtual void RegisterCondition(FFMActionInfo ActionInfo, class UBlackboardComponent* BlackBoardInfo, class AActor* Actor);
 
 	//the action taken to rollback the condition
+	UFUNCTION()
 	virtual void RollbackCondition(FFMActionInfo ActionInfo, class UBlackboardComponent* BlackBoardInfo, class AActor* Actor);
 
 	//the action taken to consume the condition

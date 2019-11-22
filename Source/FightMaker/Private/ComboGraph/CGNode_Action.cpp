@@ -89,6 +89,8 @@ void UCGNode_Action::EvaluateNode(FFMAction& ActionOutput, class UBlackboardComp
 	}
 	else {
 		ActionOutput.ConfirmAction.Clear();
+		ActionOutput.RegisterAction.Clear();
+		ActionOutput.RollbackAction.Clear();
 		ActionOutput.UseableResponse = true;
 		ActionOutput.ActionInfo = ActionInfo;
 		ActionOutput.NextIndex = GetNodeIndex();

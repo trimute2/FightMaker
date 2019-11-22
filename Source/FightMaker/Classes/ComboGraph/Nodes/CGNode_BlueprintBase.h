@@ -24,11 +24,26 @@ public:
 
 	virtual bool ConditionCheck(class UBlackboardComponent& blackboard) override;
 
+	virtual void RegisterCondition(FFMActionInfo ActionInfo, class UBlackboardComponent* BlackBoardInfo, class AActor* Actor) override;
+
+	virtual void RollbackCondition(FFMActionInfo ActionInfo, class UBlackboardComponent* BlackBoardInfo, class AActor* Actor) override;
+
+	virtual void ConfirmCondition(FFMActionInfo ActionInfo, class UBlackboardComponent* BlackBoardInfo, class AActor* Actor) override;
+
 protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	bool PerformConditionCheck(UBlackboardComponent* blackboard);
 
-	uint32 ConditionCheckImplemented : 1;
+	UFUNCTION(BlueprintImplementableEvent)
+	void RegisterNode(FFMActionInfo ActionInfo, UBlackboardComponent* blackboard, class AActor* Actor);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void RollbackNode(FFMActionInfo ActionInfo, UBlackboardComponent* blackboard, class AActor* Actor);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ConfirmNode(FFMActionInfo ActionInfo, UBlackboardComponent* blackboard, class AActor* Actor);
+
+	uint32 ConditionCheckImplemented : 4;
 
 };

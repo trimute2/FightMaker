@@ -27,6 +27,8 @@ void UCGNode_Condition::EvaluateNode(FFMAction & ActionOutput, UBlackboardCompon
 			node->EvaluateNode(ActionOutput, blackboard);
 		}
 		ActionOutput.ConfirmAction.AddDynamic(this, &UCGNode_Condition::ConfirmCondition);
+		ActionOutput.RegisterAction.AddDynamic(this, &UCGNode_Condition::RegisterCondition);
+		ActionOutput.RollbackAction.AddDynamic(this, &UCGNode_Condition::RollbackCondition);
 	}
 }
 
