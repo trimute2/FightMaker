@@ -22,7 +22,7 @@ FComboGraphEditor::FComboGraphEditor() :ComboGraphBeingEdited(nullptr)
 }
 
 FComboGraphEditor::~FComboGraphEditor() {
-
+	GEditor->UnregisterForUndo(this);
 }
 
 void FComboGraphEditor::RegisterTabSpawners(const TSharedRef<class FTabManager>& InTabManager)
@@ -54,6 +54,8 @@ void FComboGraphEditor::UnregisterTabSpawners(const TSharedRef<class FTabManager
 void FComboGraphEditor::InitComboGraphEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, class UComboGraph* InitComboGraph)
 {
 	ComboGraphBeingEdited = InitComboGraph;
+
+	GEditor->RegisterForUndo(this);
 
 	FGraphEditorCommands::Register();
 	FComboGraphEditorCommands::Register();
@@ -393,5 +395,22 @@ bool FComboGraphEditor::CanMakeRootNode()
 		}
 	}
 	return false;
+}
+
+void FComboGraphEditor::PostUndo(bool bSuccess)
+{
+	if (ComboGraphGraphEditor.IsValid())
+	{
+		ComboGraphGraphEditor->ClearSelectionSet();
+		ComboGraphGraphEditor->NotifyGraphChanged();
+	}
+}
+
+void FComboGraphEditor::NotifyPostChange(const FPropertyChangedEvent & PropertyChangedEvent, UProperty * PropertyThatChanged)
+{
+	if (ComboGraphGraphEditor.IsValid() && PropertyChangedEvent.ChangeType != EPropertyChangeType::Interactive)
+	{
+		ComboGraphGraphEditor->NotifyGraphChanged();
+	}
 }
 #undef LOCTEXT_NAMESPACE

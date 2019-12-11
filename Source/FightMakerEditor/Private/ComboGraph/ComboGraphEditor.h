@@ -1,15 +1,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Misc/NotifyHook.h"
 #include "UObject/GCObject.h"
 #include "Toolkits/IToolkitHost.h"
 #include "Toolkits/AssetEditorToolkit.h"
 #include "GraphEditor.h"
+#include "EditorUndoClient.h"
 
 class UComboGraph;
 class UEdGraph;
 
-class FComboGraphEditor : public FAssetEditorToolkit, public FGCObject
+class FComboGraphEditor : public FAssetEditorToolkit, public FGCObject, public FNotifyHook, public FEditorUndoClient
 {
 public:
 	FComboGraphEditor();
@@ -32,6 +34,11 @@ public:
 	// End of FSerializableObject interface
 
 	virtual TSet<UObject*> GetSelectedNodes() const;
+
+	//~ Begin FEditorUndoClient Interface
+	virtual void PostUndo(bool bSuccess) override;
+	virtual void PostRedo(bool bSuccess) override { PostUndo(bSuccess); }
+	// End of FEditorUndoClient
 
 public:
 	void InitComboGraphEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, class UComboGraph* InitComboGraph);
@@ -56,6 +63,9 @@ protected:
 
 
 private:
+	/** FNotifyHook interface */
+	virtual void NotifyPostChange(const FPropertyChangedEvent& PropertyChangedEvent, UProperty* PropertyThatChanged) override;
+
 	void CreateInternalWidgets();
 
 	TSharedRef<SGraphEditor> CreateGraphEditorWidget();
