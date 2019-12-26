@@ -83,19 +83,6 @@ UEdGraph* UComboGraph::GetGraph() {
 	return ComboGraphGraph;
 }
 
-void UComboGraph::GetInputNames(TArray<FString>& out) {
-	//InputNameMap.GenerateKeyArray(out);
-	out = Inputnames;
-}
-
-void UComboGraph::AddInputEvent(FString name) {
-	//InputNameMap.Add(name, 1 << LowestUnset);
-	//LowestUnset++;
-	if (Inputnames.Num() < 32) {
-		Inputnames.Add(name);
-	}
-}
-
 void UComboGraph::SetComboGraphModuleInterface(TSharedPtr<IComboGraphModuleInterface> InComboGraphModuleInterface)
 {
 	check(!ComboGraphModuleInterface.IsValid());
@@ -110,12 +97,6 @@ void UComboGraph::CompileAssetNodesFromGraphNodes() {
 TSharedPtr<IComboGraphModuleInterface> UComboGraph::GetComboGraphModuleInterface()
 {
 	return ComboGraphModuleInterface;
-}
-
-void UComboGraph::ChangeInputName(FString newName, int index) {
-	if (index >= 0 && index < Inputnames.Num()&&!Inputnames.Contains(newName)) {
-		Inputnames[index] = newName;
-	}
 }
 
 void UComboGraph::MakeNodeRoot(UCGNode* newRoot)

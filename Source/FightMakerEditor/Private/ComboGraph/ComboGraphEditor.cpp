@@ -199,58 +199,6 @@ TSharedRef<SDockTab> FComboGraphEditor::SpawnTab_Properties(const FSpawnTabArgs 
 		];
 }
 
-UCGNode * FComboGraphEditor::CreateNewUCGNode(UClass * NewExpressionClass, const FVector2D & NodePos, bool bAutoSelect, bool bAutoAssignResource)
-{
-	//TODO finish this function
-	UCGNode* newAssetNode = NULL;
-
-	const FScopedTransaction Transaction(NSLOCTEXT("FightMakerEditor", "ComboGraphEditorNewNode", "Combo Graph Editor: New Node"));
-	ComboGraphBeingEdited->Modify();
-
-	//Call function to create UCGNode here
-
-	if (newAssetNode)
-	{
-		//call function in the graph to add the node to the graph
-	}
-
-	/*
-	const FScopedTransaction Transaction( NSLOCTEXT("UnrealEd", "MaterialEditorNewExpression", "Material Editor: New Expression") );
-		Material->Modify();
-
-		UObject* SelectedAsset = nullptr;
-		if (bAutoAssignResource)
-		{
-			// Load selected assets
-			FEditorDelegates::LoadSelectedAssetsIfNeeded.Broadcast();
-			SelectedAsset = GEditor->GetSelectedObjects()->GetTop<UObject>();
-		}
-
-		NewExpression = UMaterialEditingLibrary::CreateMaterialExpressionEx(Material, MaterialFunction, NewExpressionClass, SelectedAsset, NodePos.X, NodePos.Y);
-
-		if (NewExpression)
-		{
-			Material->MaterialGraph->AddExpression(NewExpression, bAutoSelect);
-
-			// Select the new node.
-			if ( bAutoSelect )
-			{
-				GraphEditor->SetNodeSelection(NewExpression->GraphNode, true);
-			}
-		}
-		Material->MarkPackageDirty();
-
-	RefreshExpressionPreviews();
-	GraphEditor->NotifyGraphChanged();
-	SetMaterialDirty();
-	MaterialParametersOverviewWidget->UpdateEditorInstance(MaterialEditorInstance);
-	return NewExpression;
-	*/
-	ComboGraphBeingEdited->MarkPackageDirty();
-
-	return newAssetNode;
-}
-
 FGraphPanelSelectionSet FComboGraphEditor::GetSelectedNodes() const
 {
 	FGraphPanelSelectionSet CurrentSelection;
@@ -314,8 +262,6 @@ void FComboGraphEditor::DeleteSelectedNodes()
 
 				FBlueprintEditorUtils::RemoveNode(NULL, ComboGraphNode, true);
 
-				//TODO: call the recompile graph method here once written
-
 				ComboGraphBeingEdited->RemoveNodeFromBase(DelNode);
 
 				ComboGraphBeingEdited->MarkPackageDirty();
@@ -376,7 +322,6 @@ void FComboGraphEditor::OnMakeRootNode()
 		if (SelectedNode != NULL)
 		{
 			SelectedNode->MakeRootNode();
-			//TODO: Make the node a root node
 			//ComboGraphGraphEditor->IsNodeTitleVisible(SelectedNode, true);
 			break;
 		}

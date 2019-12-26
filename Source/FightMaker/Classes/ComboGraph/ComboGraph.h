@@ -69,10 +69,6 @@ public:
 	UPROPERTY()
 	class UEdGraph* ComboGraphGraph;
 
-	UPROPERTY()
-	uint32 LowestUnset;
-
-
 #endif
 
 	UPROPERTY(EditAnywhere)
@@ -84,39 +80,18 @@ public:
 
 	UPROPERTY()
 	UCGNode_Branching *RootNode; //the root node
-	//void DetermineNodePriorities();
+
 protected:
-	////////////////////////////////////////////////
-	// All of these arrays and the map need to be goten rid of 
-	//TODO: get rid of un needed variables
-	UPROPERTY()
-	TMap<FString, uint32> InputNameMap;
-	//evaluate(input,state,attackid)
 
-	UPROPERTY()
-	TArray<FString> Inputnames;
-
-	//note  getting rid of in favor of base nodes and entry nodes
-	//might make this a set instead of a list
-	//The list of nodes to base the evaluation off of
+	//TODO: decouple root nodes array from the functionality of root nodes
 	UPROPERTY()
 	TArray<class UCGNode*> RootNodes;
 
-
-	//UPROPERTY()
-	//TArray<class UCGNode*> BaseNodes; //Nodes that are evaluated by default
-
-	UPROPERTY()
-	TArray<class UCGNode*> EntryNodes; //Node that are entry points for evaluation but are not evaluated by default
 	////////////////////////////////////////////////
 	// the arrays that we should be keeping
 
 	UPROPERTY()
 	TArray<UCGNode*> BaseNodes; //The array of all nodes set in the graph
-
-	//will be added once I make Branch nodes
-	//UPROPERTY()
-	//UCGNode_Branching *RootNode; //the root node
 
 public:
 #if WITH_EDITOR
@@ -134,7 +109,6 @@ public:
 
 	////////////////////////////////////////////////
 	//Used by editor to display and edit stuff
-	void GetInputNames(TArray<FString>& out);
 
 	class UEdGraph* GetGraph();
 
@@ -154,13 +128,6 @@ public:
 	}
 
 #if WITH_EDITOR
-
-	////////////////////////////////////////////////
-	// old functions to get rid of
-
-	void AddInputEvent(FString name);
-
-	void ChangeInputName(FString newName, int index);
 
 
 	////////////////////////////////////////////////
