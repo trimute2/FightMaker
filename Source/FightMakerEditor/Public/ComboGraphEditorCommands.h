@@ -13,5 +13,7 @@ public:
 
 	TSharedPtr<FUICommandInfo> MakeRoot;
 
+	TSharedPtr<FUICommandInfo> RemoveFromRoot;
+
 	virtual void RegisterCommands() override;
 };

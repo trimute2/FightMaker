@@ -54,6 +54,10 @@ protected:
 
 	void OnMakeRootNode();
 	bool CanMakeRootNode();
+
+	void OnRemoveNodeFromRoot();
+	bool CanRemoveNodeFromRoot();
+
 	/** New Graph Editor */
 	TSharedPtr<SGraphEditor> ComboGraphGraphEditor;
 

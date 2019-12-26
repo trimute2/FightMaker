@@ -53,19 +53,29 @@ void UComboGraphNode_Base::MakeRootNode()
 	//UE_LOG(CGGraphNodeSystem, Log, TEXT("Make root called."));
 	if (Node) {
 		//UE_LOG(CGGraphNodeSystem, Log, TEXT("node found."));
-		if (UComboGraph* CGAsset = Cast<UComboGraph>(GetOuter()->GetOuter())) {
-			//UE_LOG(CGGraphNodeSystem, Log, TEXT("cg found."));
-			CGAsset->MakeNodeRoot(Node);
-			UEdGraphPin* outp = FindPin(TEXT("Previous"), EGPD_Input);
-			if (outp) {
-				outp->MarkPendingKill();
-				Pins.Remove(outp);
-				GetGraph()->NotifyGraphChanged();
-				//DestroyPin(outp);
-			}/*else{
-				UE_LOG(CGGraphNodeSystem, Warning, TEXT("Cant find Pin."));
-			}*/
-		}
+		//if (UComboGraph* CGAsset = Cast<UComboGraph>(GetOuter()->GetOuter())) {
+		//UE_LOG(CGGraphNodeSystem, Log, TEXT("cg found."));
+		//CGAsset->MakeNodeRoot(Node);
+		Node->bIsRoot = true;
+		UEdGraphPin* outp = FindPin(TEXT("Previous"), EGPD_Input);
+		if (outp) {
+			outp->MarkPendingKill();
+			Pins.Remove(outp);
+			GetGraph()->NotifyGraphChanged();
+			//DestroyPin(outp);
+		}/*else{
+			UE_LOG(CGGraphNodeSystem, Warning, TEXT("Cant find Pin."));
+		}*/
+		//}
+	}
+}
+
+void UComboGraphNode_Base::RemoveFromRoot()
+{
+	if (Node) {
+		Node->bIsRoot = false;
+		CreateInputPins();
+		GetGraph()->NotifyGraphChanged();
 	}
 }
 
@@ -203,8 +213,12 @@ void UComboGraphNode_Base::NodeConnectionListChanged()
 void UComboGraphNode_Base::GetContextMenuActions(const FGraphNodeContextMenuBuilder & Context) const
 {
 	if (Context.Node) {
-		if (Node&&Node->bCanBeRoot&&!Node->bIsRoot) {
-			Context.MenuBuilder->AddMenuEntry(FComboGraphEditorCommands::Get().MakeRoot);
+		if (Node&&Node->bCanBeRoot) {
+			if (Node->bIsRoot) {
+				Context.MenuBuilder->AddMenuEntry(FComboGraphEditorCommands::Get().RemoveFromRoot);
+			}else{
+				Context.MenuBuilder->AddMenuEntry(FComboGraphEditorCommands::Get().MakeRoot);
+			}
 		}
 	}
 }

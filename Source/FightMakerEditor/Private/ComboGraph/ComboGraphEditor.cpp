@@ -153,6 +153,11 @@ TSharedRef<SGraphEditor> FComboGraphEditor::CreateGraphEditorWidget() {
 			FExecuteAction::CreateSP(this, &FComboGraphEditor::OnMakeRootNode),
 			FCanExecuteAction::CreateSP(this, &FComboGraphEditor::CanMakeRootNode)
 		);
+
+		GraphEditorCommands->MapAction(FComboGraphEditorCommands::Get().RemoveFromRoot,
+			FExecuteAction::CreateSP(this, &FComboGraphEditor::OnRemoveNodeFromRoot),
+			FCanExecuteAction::CreateSP(this, &FComboGraphEditor::CanRemoveNodeFromRoot)
+		);
 	}
 	FGraphAppearanceInfo AppearanceInfo;
 	AppearanceInfo.CornerText = LOCTEXT("AppearanceCornerText_ComboGraph", "COMBO GRAPH");
@@ -337,6 +342,35 @@ bool FComboGraphEditor::CanMakeRootNode()
 		if (UComboGraphNode_Base* SelectedNode = Cast<UComboGraphNode_Base>(*SelectedNodes.CreateConstIterator()))
 		{
 			return SelectedNode->Node && SelectedNode->Node->bCanBeRoot && !SelectedNode->Node->bIsRoot;
+		}
+	}
+	return false;
+}
+
+void FComboGraphEditor::OnRemoveNodeFromRoot()
+{
+	//TODO: remove node from root
+	const FGraphPanelSelectionSet SelectedNodes = GetSelectedNodes();
+	for (FGraphPanelSelectionSet::TConstIterator NodeIt(SelectedNodes); NodeIt; ++NodeIt)
+	{
+		UComboGraphNode_Base* SelectedNode = Cast<UComboGraphNode_Base>(*NodeIt);
+		if (SelectedNode != NULL)
+		{
+			SelectedNode->RemoveFromRoot();
+			//ComboGraphGraphEditor->IsNodeTitleVisible(SelectedNode, true);
+			break;
+		}
+	}
+}
+
+bool FComboGraphEditor::CanRemoveNodeFromRoot()
+{
+	const FGraphPanelSelectionSet SelectedNodes = GetSelectedNodes();
+	if (SelectedNodes.Num() == 1)
+	{
+		if (UComboGraphNode_Base* SelectedNode = Cast<UComboGraphNode_Base>(*SelectedNodes.CreateConstIterator()))
+		{
+			return SelectedNode->Node && SelectedNode->Node->bCanBeRoot && SelectedNode->Node->bIsRoot;
 		}
 	}
 	return false;

@@ -10,28 +10,6 @@
 #include "ComboGraph.generated.h"
 
 FIGHTMAKER_API DECLARE_LOG_CATEGORY_EXTERN(CGraphsystem, Log, All);
-/*
-might not need this keeping this here since i already typed it out andmight need it later
-enum EInuputEvents
-{
-	NOInput = 0,
-	I01 = 0x0001,
-	I02 = 0x0002,
-	I03 = 0x0004,
-	I04 = 0x0008,
-	I05 = 0x0010,
-	I06 = 0x0020,
-	I07 = 0x0040,
-	I08 = 0x0080,
-	I09 = 0x0100,
-	I10 = 0x0200,
-	I11 = 0x0400,
-	I12 = 0x0800,
-	I13 = 0x1000,
-	I14 = 0x2000,
-	I15 = 0x4000,
-	I16 = 0x8000
-};*/
 
 #if WITH_EDITOR
 class UComboGraph;

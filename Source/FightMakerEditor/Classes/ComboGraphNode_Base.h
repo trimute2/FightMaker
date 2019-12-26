@@ -27,6 +27,8 @@ public:
 
 	void MakeRootNode();
 
+	void RemoveFromRoot();
+
 	void GetOutputPins(TArray<class UEdGraphPin*>& OutputPins);
 
 	//get the nodes on this branch
