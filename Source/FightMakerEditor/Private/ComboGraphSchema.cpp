@@ -23,7 +23,7 @@ UEdGraphNode* FComboGraphSchemaAction_NewNode::PerformAction(class UEdGraph* Par
 	check(ComboNodeClass);
 
 	UComboGraph* ComboGraph = Cast<UComboGraphGraph>(ParentGraph)->GetComboGraph();
-	const FScopedTransaction Transaction(LOCTEXT("SoundCueEditorNewSoundNode", "Sound Cue Editor: New Sound Node"));
+	const FScopedTransaction Transaction(LOCTEXT("ComboGraphEditorNewComboNode", "Combo Graph Editor: New Combo Node"));
 	ParentGraph->Modify();
 	ComboGraph->Modify();
 
