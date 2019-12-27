@@ -117,10 +117,15 @@ public:
 			}
 			graphNode->Node->CompileComplexNode(OutputNodes, InputNodes);
 		}*/
-		ComboGraph->RootNode->SetFlags(RF_Transactional);
-		ComboGraph->RootNode->Modify();
-		ComboGraph->RootNode->SetChildNodes(RootNodes);
-		ComboGraph->RootNode->PostEditChange();
+		UCGNode* RootNode = ComboGraph->GetRootNode();
+		RootNode->SetFlags(RF_Transactional);
+		RootNode->Modify();
+		RootNode->SetChildNodes(RootNodes);
+		RootNode->PostEditChange();
+		//ComboGraph->RootNode->SetFlags(RF_Transactional);
+		//ComboGraph->RootNode->Modify();
+		//ComboGraph->RootNode->SetChildNodes(RootNodes);
+		//ComboGraph->RootNode->PostEditChange();
 
 	}
 

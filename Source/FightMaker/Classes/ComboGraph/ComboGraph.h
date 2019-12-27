@@ -55,18 +55,12 @@ public:
 	//MoveData evaluate(blackboard)
 	FFMAction Evaluate(FFMAction& OutputAction, class UBlackboardComponent* blackboard, int FirstEvalIndex);
 
-
-	UPROPERTY()
-	UCGNode_Branching *RootNode; //the root node
+	
 
 protected:
 
-	//TODO: decouple root nodes array from the functionality of root nodes
 	UPROPERTY()
-	TArray<class UCGNode*> RootNodes;
-
-	////////////////////////////////////////////////
-	// the arrays that we should be keeping
+	UCGNode_Branching *RootNode; //the root node
 
 	UPROPERTY()
 	TArray<UCGNode*> BaseNodes; //The array of all nodes set in the graph
@@ -117,6 +111,8 @@ public:
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
 
 	int FindNode(UCGNode* node);
+
+	UCGNode_Branching* GetRootNode();
 
 private:
 

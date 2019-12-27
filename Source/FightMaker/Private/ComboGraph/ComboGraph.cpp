@@ -83,22 +83,8 @@ UEdGraph* UComboGraph::GetGraph() {
 	return ComboGraphGraph;
 }
 
-void UComboGraph::SetComboGraphModuleInterface(TSharedPtr<IComboGraphModuleInterface> InComboGraphModuleInterface)
-{
-	check(!ComboGraphModuleInterface.IsValid());
-	ComboGraphModuleInterface = InComboGraphModuleInterface;
-}
-
-void UComboGraph::CompileAssetNodesFromGraphNodes() {
-	UComboGraph::GetComboGraphModuleInterface()->CompileAssetNodesFromGraphNodes(this);
-}
-
-/** Gets the sound cue graph editor implementation. */
-TSharedPtr<IComboGraphModuleInterface> UComboGraph::GetComboGraphModuleInterface()
-{
-	return ComboGraphModuleInterface;
-}
-
+#endif
+//move posload here
 void UComboGraph::PostLoad()
 {
 	Super::PostLoad();
@@ -111,6 +97,24 @@ void UComboGraph::PostLoad()
 	}
 #endif
 
+}
+
+
+#if WITH_EDITOR
+/** Gets the Combo graph editor implementation. */
+TSharedPtr<IComboGraphModuleInterface> UComboGraph::GetComboGraphModuleInterface()
+{
+	return ComboGraphModuleInterface;
+}
+
+void UComboGraph::SetComboGraphModuleInterface(TSharedPtr<IComboGraphModuleInterface> InComboGraphModuleInterface)
+{
+	check(!ComboGraphModuleInterface.IsValid());
+	ComboGraphModuleInterface = InComboGraphModuleInterface;
+}
+
+void UComboGraph::CompileAssetNodesFromGraphNodes() {
+	UComboGraph::GetComboGraphModuleInterface()->CompileAssetNodesFromGraphNodes(this);
 }
 
 void UComboGraph::PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent)
@@ -128,12 +132,18 @@ void UComboGraph::PostEditChangeProperty(FPropertyChangedEvent & PropertyChanged
 	UComboGraph::GetComboGraphModuleInterface()->UpdateBlackBoardAsset(ComboGraphGraph);
 	
 }
-#endif
 
 int UComboGraph::FindNode(UCGNode * node)
 {
 	return BaseNodes.Find(node);
 }
+
+
+UCGNode_Branching * UComboGraph::GetRootNode()
+{
+	return RootNode;
+}
+#endif
 
 void UComboGraph::Serialize(FStructuredArchive::FRecord Record)
 {
