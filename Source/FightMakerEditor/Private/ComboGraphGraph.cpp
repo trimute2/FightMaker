@@ -93,6 +93,8 @@ public:
 				}
 			}
 		}
+		//TODO: get rid of complex compile in all forms
+		/*
 		TArray<UCGNode*> InputNodes;
 		TArray<UCGNode*> OutputNodes;
 		for (UComboGraphNode_Base* graphNode : ComplexCompile) {
@@ -114,7 +116,7 @@ public:
 				}
 			}
 			graphNode->Node->CompileComplexNode(OutputNodes, InputNodes);
-		}
+		}*/
 		ComboGraph->RootNode->SetFlags(RF_Transactional);
 		ComboGraph->RootNode->Modify();
 		ComboGraph->RootNode->SetChildNodes(RootNodes);

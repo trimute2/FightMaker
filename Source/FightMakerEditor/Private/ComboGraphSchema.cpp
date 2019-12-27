@@ -269,6 +269,17 @@ FLinearColor UComboGraphSchema::GetPinTypeColor(const FEdGraphPinType& PinType) 
 	return FLinearColor(0.95f, 0.02f, 0.02f, 1.0f);
 }
 
+void UComboGraphSchema::BreakPinLinks(UEdGraphPin & TargetPin, bool bSendsNodeNotifcation) const
+{
+	const FScopedTransaction Transaction(NSLOCTEXT("UnrealEd", "GraphEd_BreakPinLinks", "Break Pin Links"));
+
+	Super::BreakPinLinks(TargetPin, bSendsNodeNotifcation);
+
+	if (bSendsNodeNotifcation) {
+		CastChecked<UComboGraphGraph>(TargetPin.GetOwningNode()->GetGraph())->GetComboGraph()->CompileAssetNodesFromGraphNodes();
+	}
+}
+
 
 const FName UComboGraphSchema::PC_Combo(TEXT("combo"));
 
