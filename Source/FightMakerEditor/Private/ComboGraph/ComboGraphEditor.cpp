@@ -269,6 +269,8 @@ void FComboGraphEditor::DeleteSelectedNodes()
 
 				ComboGraphBeingEdited->RemoveNodeFromBase(DelNode);
 
+				ComboGraphBeingEdited->CompileAssetNodesFromGraphNodes();
+
 				ComboGraphBeingEdited->MarkPackageDirty();
 			}
 			else {
@@ -320,6 +322,8 @@ bool FComboGraphEditor::CanRenameNode() const
 
 void FComboGraphEditor::OnMakeRootNode()
 {
+	const FScopedTransaction Transaction(NSLOCTEXT("UnrealEd", "ComboGraphEditorMakeRootNode", "Make Root Node"));
+	ComboGraphGraphEditor->GetCurrentGraph()->Modify();
 	const FGraphPanelSelectionSet SelectedNodes = GetSelectedNodes();
 	for (FGraphPanelSelectionSet::TConstIterator NodeIt(SelectedNodes); NodeIt; ++NodeIt)
 	{
@@ -327,6 +331,8 @@ void FComboGraphEditor::OnMakeRootNode()
 		if (SelectedNode != NULL)
 		{
 			SelectedNode->MakeRootNode();
+			ComboGraphBeingEdited->CompileAssetNodesFromGraphNodes();
+			ComboGraphBeingEdited->MarkPackageDirty();
 			//ComboGraphGraphEditor->IsNodeTitleVisible(SelectedNode, true);
 			break;
 		}
@@ -357,6 +363,8 @@ void FComboGraphEditor::OnRemoveNodeFromRoot()
 		if (SelectedNode != NULL)
 		{
 			SelectedNode->RemoveFromRoot();
+			ComboGraphBeingEdited->CompileAssetNodesFromGraphNodes();
+			ComboGraphBeingEdited->MarkPackageDirty();
 			//ComboGraphGraphEditor->IsNodeTitleVisible(SelectedNode, true);
 			break;
 		}

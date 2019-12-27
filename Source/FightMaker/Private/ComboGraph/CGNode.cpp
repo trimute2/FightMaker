@@ -54,6 +54,29 @@ void UCGNode::AddChildNodes(UCGNode * child)
 void UCGNode::CompileComplexNode(TArray<UCGNode*> OutputNodes, TArray<UCGNode*> InputNodes)
 {
 }
+
+void UCGNode::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	MarkPackageDirty();
+}
+
+void UCGNode::PostLoad()
+{
+	Super::PostLoad();
+	// Make sure Combo nodes are transactional (so they work with undo system)
+	SetFlags(RF_Transactional);
+}
+
+void UCGNode::AddReferencedObjects(UObject * InThis, FReferenceCollector & Collector)
+{
+	UCGNode* This = CastChecked<UCGNode>(InThis);
+
+	Collector.AddReferencedObject(This->GraphNode, This);
+
+	Super::AddReferencedObjects(InThis, Collector);
+}
 #endif
 
 int UCGNode::DeterminePriority()

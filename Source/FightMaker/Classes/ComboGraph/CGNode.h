@@ -68,6 +68,11 @@ class FIGHTMAKER_API UCGNode : public UObject
 	virtual void AddChildNodes(TArray<UCGNode*>& children);
 	virtual void AddChildNodes(UCGNode* child);
 	virtual void CompileComplexNode(TArray<UCGNode*> OutputNodes, TArray<UCGNode*> InputNodes);
+
+	//virtual void PostInitProperties() override;
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+	virtual void PostLoad() override;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 #endif
 	virtual int DeterminePriority();
 	virtual bool DetermineBranchHasAction();
