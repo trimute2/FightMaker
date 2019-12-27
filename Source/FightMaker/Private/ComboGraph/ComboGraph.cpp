@@ -99,12 +99,6 @@ TSharedPtr<IComboGraphModuleInterface> UComboGraph::GetComboGraphModuleInterface
 	return ComboGraphModuleInterface;
 }
 
-void UComboGraph::MakeNodeRoot(UCGNode* newRoot)
-{
-	newRoot->bIsRoot = true;
-	RootNodes.AddUnique(newRoot);
-}
-
 void UComboGraph::PostLoad()
 {
 	Super::PostLoad();

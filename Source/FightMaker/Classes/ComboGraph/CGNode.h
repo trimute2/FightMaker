@@ -38,8 +38,8 @@ class FIGHTMAKER_API UCGNode : public UObject
 	//virtual void
 
 	//maybe move this to the graph representation later
-	UPROPERTY()
-	uint8 bIsRoot : 1;
+	//UPROPERTY()
+	//uint8 bIsRoot : 1;
 
 #if WITH_EDITORONLY_DATA
 	UPROPERTY()
@@ -53,6 +53,9 @@ class FIGHTMAKER_API UCGNode : public UObject
 
 	UPROPERTY()
 	uint8 bCanBeRoot : 1;
+
+	UPROPERTY()
+	uint8 bIsRoot : 1;
 
 	UPROPERTY()
 	uint8 bIsConnectedToAction : 1;

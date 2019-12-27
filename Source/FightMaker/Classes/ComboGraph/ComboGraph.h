@@ -90,8 +90,6 @@ public:
 
 	class UEdGraph* GetGraph();
 
-	void MakeNodeRoot(class UCGNode* newRoot);
-
 #endif
 	virtual void PostLoad() override;
 
