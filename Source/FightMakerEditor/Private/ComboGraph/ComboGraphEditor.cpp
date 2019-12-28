@@ -273,16 +273,7 @@ void FComboGraphEditor::DeleteSelectedNodes()
 
 				ComboGraphBeingEdited->CompileAssetNodesFromGraphNodes();
 
-				//for whatever reason undo is not adding the node back to the base nodes
-				//UComboGraph::TrialRemoveNodeFromBase(ComboGraphBeingEdited, DelNode);
-
 				ComboGraphBeingEdited->RemoveNodeFromBase(DelNode);
-
-				/*if (GUndo) {
-					GUndo->SaveArray(ComboGraphBeingEdited, (FScriptArray*)(&ComboGraphBeingEdited->GetBaseNodesArray()),);
-				}*/
-
-				//ComboGraphBeingEdited->GetBaseNodesArray().Remove(DelNode);
 
 				ComboGraphBeingEdited->MarkPackageDirty();
 			}
@@ -401,7 +392,6 @@ void FComboGraphEditor::PostUndo(bool bSuccess)
 {
 	if (ComboGraphGraphEditor.IsValid())
 	{
-		UE_LOG(CGGraphEditorSystem, Log, TEXT("Nodes Num: %d"),ComboGraphBeingEdited->GetBaseNodesArray().Num());
 		ComboGraphGraphEditor->ClearSelectionSet();
 		ComboGraphGraphEditor->NotifyGraphChanged();
 	}

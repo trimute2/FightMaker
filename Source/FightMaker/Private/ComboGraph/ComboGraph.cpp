@@ -96,16 +96,6 @@ void UComboGraph::RemoveNodeFromBase(UCGNode * CGNode)
 	BaseNodes.Remove(CGNode);
 }
 
-void UComboGraph::TrialRemoveNodeFromBase(UComboGraph * ComboGraph, UCGNode * CGNode)
-{
-	ComboGraph->BaseNodes.Remove(CGNode);
-}
-
-TArray<UCGNode*>& UComboGraph::GetBaseNodesArray()
-{
-	return BaseNodes;
-}
-
 UEdGraph* UComboGraph::GetGraph() {
 	return ComboGraphGraph;
 }

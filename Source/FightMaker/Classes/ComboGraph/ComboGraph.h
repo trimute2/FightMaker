@@ -77,10 +77,6 @@ public:
 
 	void RemoveNodeFromBase(UCGNode* CGNode);
 
-	static void TrialRemoveNodeFromBase(UComboGraph* ComboGraph, UCGNode* CGNode);
-
-	TArray<UCGNode*>& GetBaseNodesArray();
-
 	////////////////////////////////////////////////
 	//Used by editor to display and edit stuff
 
