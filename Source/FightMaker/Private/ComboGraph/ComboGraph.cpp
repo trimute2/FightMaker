@@ -76,7 +76,34 @@ void UComboGraph::SetUpNode(UCGNode* CGNode, bool bSelectNewNode)
 
 void UComboGraph::RemoveNodeFromBase(UCGNode * CGNode)
 {
+	//really dumb attempt at not having to use a transarray to get undo working
+	int index = BaseNodes.Find(CGNode);
+	if (GUndo) {
+		GUndo->SaveArray(this, (FScriptArray*)&BaseNodes, index, 1, -1, sizeof(UCGNode*),
+			[](void* TPtr) {
+				new (TPtr) UCGNode*;
+			},
+			[](FArchive& Ar, void* TPtr) {
+				Ar << *(UCGNode**)TPtr;
+			},
+			[](void* TPtr)
+			{
+				UCGNode** ptrptr = (UCGNode**)TPtr;
+				UCGNode* ptr = *ptrptr;
+				ptr->~UCGNode();
+			});
+	}
 	BaseNodes.Remove(CGNode);
+}
+
+void UComboGraph::TrialRemoveNodeFromBase(UComboGraph * ComboGraph, UCGNode * CGNode)
+{
+	ComboGraph->BaseNodes.Remove(CGNode);
+}
+
+TArray<UCGNode*>& UComboGraph::GetBaseNodesArray()
+{
+	return BaseNodes;
 }
 
 UEdGraph* UComboGraph::GetGraph() {

@@ -55,8 +55,6 @@ public:
 	//MoveData evaluate(blackboard)
 	FFMAction Evaluate(FFMAction& OutputAction, class UBlackboardComponent* blackboard, int FirstEvalIndex);
 
-	
-
 protected:
 
 	UPROPERTY()
@@ -78,6 +76,10 @@ public:
 	void SetUpNode(UCGNode* CGNode, bool bSelectNewNode = true);
 
 	void RemoveNodeFromBase(UCGNode* CGNode);
+
+	static void TrialRemoveNodeFromBase(UComboGraph* ComboGraph, UCGNode* CGNode);
+
+	TArray<UCGNode*>& GetBaseNodesArray();
 
 	////////////////////////////////////////////////
 	//Used by editor to display and edit stuff

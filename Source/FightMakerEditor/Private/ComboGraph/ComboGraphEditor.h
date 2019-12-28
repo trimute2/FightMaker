@@ -8,6 +8,8 @@
 #include "GraphEditor.h"
 #include "EditorUndoClient.h"
 
+FIGHTMAKEREDITOR_API DECLARE_LOG_CATEGORY_EXTERN(CGGraphEditorSystem, Log, All);
+
 class UComboGraph;
 class UEdGraph;
 

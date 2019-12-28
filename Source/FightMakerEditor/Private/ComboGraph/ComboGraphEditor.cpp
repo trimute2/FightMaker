@@ -14,6 +14,8 @@
 
 #define LOCTEXT_NAMESPACE "ComboGraphEditor"
 
+DEFINE_LOG_CATEGORY(CGGraphEditorSystem)
+
 const FName FComboGraphEditor::GraphCanvasTabId(TEXT("ComboGraphEditor_GraphCanvas"));
 const FName FComboGraphEditor::PropertiesTabId(TEXT("ComboGraphEditor_DetailView"));
 
@@ -54,6 +56,8 @@ void FComboGraphEditor::UnregisterTabSpawners(const TSharedRef<class FTabManager
 void FComboGraphEditor::InitComboGraphEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, class UComboGraph* InitComboGraph)
 {
 	ComboGraphBeingEdited = InitComboGraph;
+
+	ComboGraphBeingEdited->SetFlags(RF_Transactional);
 
 	GEditor->RegisterForUndo(this);
 
@@ -267,9 +271,18 @@ void FComboGraphEditor::DeleteSelectedNodes()
 
 				FBlueprintEditorUtils::RemoveNode(NULL, ComboGraphNode, true);
 
+				ComboGraphBeingEdited->CompileAssetNodesFromGraphNodes();
+
+				//for whatever reason undo is not adding the node back to the base nodes
+				//UComboGraph::TrialRemoveNodeFromBase(ComboGraphBeingEdited, DelNode);
+
 				ComboGraphBeingEdited->RemoveNodeFromBase(DelNode);
 
-				ComboGraphBeingEdited->CompileAssetNodesFromGraphNodes();
+				/*if (GUndo) {
+					GUndo->SaveArray(ComboGraphBeingEdited, (FScriptArray*)(&ComboGraphBeingEdited->GetBaseNodesArray()),);
+				}*/
+
+				//ComboGraphBeingEdited->GetBaseNodesArray().Remove(DelNode);
 
 				ComboGraphBeingEdited->MarkPackageDirty();
 			}
@@ -388,6 +401,7 @@ void FComboGraphEditor::PostUndo(bool bSuccess)
 {
 	if (ComboGraphGraphEditor.IsValid())
 	{
+		UE_LOG(CGGraphEditorSystem, Log, TEXT("Nodes Num: %d"),ComboGraphBeingEdited->GetBaseNodesArray().Num());
 		ComboGraphGraphEditor->ClearSelectionSet();
 		ComboGraphGraphEditor->NotifyGraphChanged();
 	}
