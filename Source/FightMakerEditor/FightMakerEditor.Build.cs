@@ -22,6 +22,7 @@ public class FightMakerEditor : ModuleRules
 		PrivateIncludePaths.AddRange(
 			new string[] {
 				"AssetTools",
+				"PropertyEditor",
 				//"AIModule"
 			}
 			);

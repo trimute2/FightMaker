@@ -245,3 +245,13 @@ void UComboGraphNode_Base::PostLoad()
 		Node->GraphNode = this;
 	}
 }
+
+void UComboGraphNode_Base::PostEditImport()
+{
+	UComboGraph* CGAsset = Cast<UComboGraph>(GetOuter()->GetOuter());
+	if (Node && CGAsset)
+	{
+		Node->InitializeFromAsset(*CGAsset);
+	}
+
+}

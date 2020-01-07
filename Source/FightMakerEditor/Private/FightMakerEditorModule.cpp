@@ -7,6 +7,7 @@
 #include "PropertyEditorModule.h"
 #include "AssetToolsModule.h"
 #include "DetailCustomizations/FMBlackboardSelectorDetails.h"
+#include "DetailCustomizations/CGNodeBlackBoardDetails.h"
 #include "ComboGraphAssetTypeActions.h"
 
 #include "ComboGraph/CGNode.h"
@@ -124,6 +125,9 @@ void FFightMakerEditorModule::OnPostEngineInit() {
 
 	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	PropertyModule.RegisterCustomPropertyTypeLayout("FMBlackboardKeySelector", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FFMBlackboardSelectorDetails::MakeInstance));
+	PropertyModule.RegisterCustomClassLayout("CGNode_BlackBoard", FOnGetDetailCustomizationInstance::CreateStatic(&FCGNodeBlackBoardDetails::MakeInstance));
+	PropertyModule.NotifyCustomizationModuleChanged();
+
 }
 
 void FFightMakerEditorModule::ShutdownModule()
@@ -142,6 +146,8 @@ void FFightMakerEditorModule::ShutdownModule()
 	{
 		FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 		PropertyModule.UnregisterCustomPropertyTypeLayout("FMBlackboardKeySelector");
+		PropertyModule.UnregisterCustomClassLayout("CGNode_BlackBoard");
+		PropertyModule.NotifyCustomizationModuleChanged();
 	}
 	CreatedAssetTypeActions.Empty();
 }

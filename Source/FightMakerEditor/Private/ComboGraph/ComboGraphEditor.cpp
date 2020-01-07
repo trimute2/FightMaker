@@ -95,6 +95,12 @@ void FComboGraphEditor::InitComboGraphEditor(const EToolkitMode::Type Mode, cons
 			)
 		);
 
+	//initialize nodes from asset
+	UComboGraphGraph *cgg = Cast<UComboGraphGraph>(ComboGraphBeingEdited->GetGraph());
+	if (cgg) {
+		cgg->UpdateBlackBoardChange();
+	}
+
 	const bool bCreateDefaultStandaloneMenu = true;
 	const bool bCreateDefaultToolbar = true;
 	FAssetEditorToolkit::InitAssetEditor(Mode, InitToolkitHost, TEXT("ComboGraphEditorApp"), StandaloneDefaultLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, InitComboGraph, false);

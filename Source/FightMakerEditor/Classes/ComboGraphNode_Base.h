@@ -53,6 +53,7 @@ public:
 
 	virtual void PostLoad() override;
 
+	virtual void PostEditImport() override;
 
 	UPROPERTY(Instanced)
 	UCGNode* Node;

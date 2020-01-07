@@ -6,6 +6,7 @@
 #include "ComboGraph/Nodes/CGNode_BlackBoardBase.h"
 #include "CGNode_BlackBoard.generated.h"
 
+class FCGNodeBlackBoardDetails;
 /**
  * 
  */
@@ -34,6 +35,27 @@ protected:
 	FString StringValue;
 
 	/** operation type */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 	uint8 OperationType;
+
+#if WITH_EDITORONLY_DATA
+
+	UPROPERTY(Category = Blackboard, EditAnywhere, meta = (DisplayName = "Key Query"))
+	TEnumAsByte<EBasicKeyOperation::Type> BasicOperation;
+
+	UPROPERTY(Category = Blackboard, EditAnywhere, meta = (DisplayName = "Key Query"))
+	TEnumAsByte<EArithmeticKeyOperation::Type> ArithmeticOperation;
+
+	UPROPERTY(Category = Blackboard, EditAnywhere, meta = (DisplayName = "Key Query"))
+	TEnumAsByte<ETextKeyOperation::Type> TextOperation;
+
+#endif //With editor only data
+
+#if WITH_EDITOR
+
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+
+#endif // with editor
+
+	friend FCGNodeBlackBoardDetails;
 };

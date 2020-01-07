@@ -12,6 +12,8 @@ namespace FFMBlackboard
 	const FKey InvalidKey = FKey(-1);
 }
 
+class FCGNodeBlackBoardDetails;
+
 USTRUCT(BlueprintType)
 struct FIGHTMAKER_API FFMBlackboardKeySelector
 {
@@ -73,7 +75,7 @@ public:
 	FORCEINLINE bool NeedsResolving() const { return SelectedKeyID == FFMBlackboard::InvalidKey && SelectedKeyName.IsNone() == false; }
 	FORCEINLINE void InvalidateResolvedKey() { SelectedKeyID = FFMBlackboard::InvalidKey; }
 
-
+	friend FCGNodeBlackBoardDetails;
 };
 
 /*

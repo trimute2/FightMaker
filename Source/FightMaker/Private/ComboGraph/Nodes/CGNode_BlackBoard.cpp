@@ -2,6 +2,8 @@
 #include "ComboGraph/Nodes/CGNode_BlackBoard.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType.h"
+#include "BehaviorTree/Blackboard/BlackboardKeyType_Enum.h"
+#include "BehaviorTree/Blackboard/BlackboardKeyType_NativeEnum.h"
 #include "Engine/Engine.h"
 
 
@@ -63,5 +65,52 @@ void UCGNode_BlackBoard::ConfirmCondition(FFMActionInfo ActionInfo, UBlackboardC
 		KeyCDO->WrappedClear(*BlackBoardInfo, KeyMemory);
 	}
 }
+
+#if WITH_EDITOR
+
+void UCGNode_BlackBoard::PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	if (PropertyChangedEvent.Property == NULL) {
+		return;
+	}
+
+	const FName ChangedPropName = PropertyChangedEvent.Property->GetFName();
+	if (ChangedPropName == GET_MEMBER_NAME_CHECKED(UCGNode_BlackBoard, BlackboardKey.SelectedKeyName)) {
+		if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Enum::StaticClass() ||
+			BlackboardKey.SelectedKeyType == UBlackboardKeyType_NativeEnum::StaticClass()) {
+			IntValue = 0;
+		}
+	}
+
+#if WITH_EDITORONLY_DATA
+
+	UBlackboardKeyType* KeyCDO = BlackboardKey.SelectedKeyType ? BlackboardKey.SelectedKeyType->GetDefaultObject<UBlackboardKeyType>() : NULL;
+	if (ChangedPropName == GET_MEMBER_NAME_CHECKED(UCGNode_BlackBoard, BasicOperation))
+	{
+		if (KeyCDO && KeyCDO->GetTestOperation() == EBlackboardKeyOperation::Basic)
+		{
+			OperationType = BasicOperation;
+		}
+	}
+	else if (ChangedPropName == GET_MEMBER_NAME_CHECKED(UCGNode_BlackBoard, ArithmeticOperation))
+	{
+		if (KeyCDO && KeyCDO->GetTestOperation() == EBlackboardKeyOperation::Arithmetic)
+		{
+			OperationType = ArithmeticOperation;
+		}
+	}
+	else if (ChangedPropName == GET_MEMBER_NAME_CHECKED(UCGNode_BlackBoard, TextOperation))
+	{
+		if (KeyCDO && KeyCDO->GetTestOperation() == EBlackboardKeyOperation::Text)
+		{
+			OperationType = TextOperation;
+		}
+	}
+#endif //WITH_EDITORONLY_DATA
+
+}
+
+#endif
 
 #undef LOCTEXT_NAMESPACE
