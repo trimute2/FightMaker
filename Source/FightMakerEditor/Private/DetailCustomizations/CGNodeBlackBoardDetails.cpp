@@ -159,8 +159,8 @@ void FCGNodeBlackBoardDetails::OnKeyIDChanged()
 
 	uint8 KeyID;
 	FPropertyAccess::Result Result = KeyIDProperty->GetValue(KeyID);
-	UProperty *Test = KeyIDProperty->GetProperty();
-	if (Result == FPropertyAccess::Success && Test->IsA<UByteProperty>())
+	FProperty *Test = KeyIDProperty->GetProperty();
+	if (Result == FPropertyAccess::Success && Test->IsA<FByteProperty>())
 	{
 		const FBlackboardEntry* KeyEntry = Blackboard->GetKey(KeyID);
 		if (KeyEntry && KeyEntry->KeyType)

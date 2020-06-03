@@ -176,18 +176,21 @@ void UComboGraph::Serialize(FStructuredArchive::FRecord Record)
 
 	if (UnderlyingArchive.UE4Ver() >= VER_UE4_COOKED_ASSETS_IN_EDITOR_SUPPORT) {
 		//FStripDataFlags StripFlags(Record.EnterField(FIELD_NAME_TEXT("SoundCueStripFlags")));
-		FStripDataFlags StripFlags(Record.EnterField(FIELD_NAME_TEXT("ComboGraphStripFlags")));
+		//FStripDataFlags StripFlags(Record.EnterField(FIELD_NAME_TEXT("ComboGraphStripFlags")));
+		FStripDataFlags StripFlags(Record.EnterField(SA_FIELD_NAME(TEXT("ComboGraphStripFlags"))));
 #if WITH_EDITORONLY_DATA
 		if (!StripFlags.IsEditorDataStripped() && ComboGraphGraph != NULL)
 		{
-			Record << NAMED_FIELD(ComboGraphGraph);
+			//Record << NAMED_FIELD(ComboGraphGraph);
+			Record << SA_VALUE(TEXT("ComboGraphGraph"), ComboGraphGraph);
 		}
 #endif
 	}
 #if WITH_EDITOR
 	else
 	{
-		Record << NAMED_FIELD(ComboGraphGraph);
+		//Record << NAMED_FIELD(ComboGraphGraph);
+		Record << SA_VALUE(TEXT("ComboGraphGraph"), ComboGraphGraph);
 	}
 #endif
 }

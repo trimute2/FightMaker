@@ -2,6 +2,7 @@
 
 
 #include "ComboGraphNode_Base.h"
+#include "ToolMenus.h"
 #include "ComboGraph/CGNode_Action.h"
 #include "ComboGraphSchema.h"
 #include "ComboGraphGraph.h"
@@ -210,6 +211,8 @@ void UComboGraphNode_Base::NodeConnectionListChanged()
 	//NewNodeAction->ComboNodeClass = GetClass();
 }*/
 
+/*
+//Version of GetContextMenuActions from 4.23
 void UComboGraphNode_Base::GetContextMenuActions(const FGraphNodeContextMenuBuilder & Context) const
 {
 	if (Context.Node) {
@@ -218,6 +221,21 @@ void UComboGraphNode_Base::GetContextMenuActions(const FGraphNodeContextMenuBuil
 				Context.MenuBuilder->AddMenuEntry(FComboGraphEditorCommands::Get().RemoveFromRoot);
 			}else{
 				Context.MenuBuilder->AddMenuEntry(FComboGraphEditorCommands::Get().MakeRoot);
+			}
+		}
+	}
+}*/
+
+void UComboGraphNode_Base::GetNodeContextMenuActions(class UToolMenu * Menu, class UGraphNodeContextMenuContext * Context) const
+{
+	if (Context->Node) {
+		if (Node&&Node->bCanBeRoot) {
+			FToolMenuSection& Section = Menu->AddSection("ComboGraphNodeRemoveMakeRoot");
+			if (Node->bIsRoot) {
+				Section.AddMenuEntry(FComboGraphEditorCommands::Get().RemoveFromRoot);
+			}
+			else {
+				Section.AddMenuEntry(FComboGraphEditorCommands::Get().MakeRoot);
 			}
 		}
 	}

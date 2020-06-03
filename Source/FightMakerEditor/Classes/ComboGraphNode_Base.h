@@ -47,7 +47,8 @@ public:
 	virtual FLinearColor GetNodeTitleColor() const override;
 	virtual void NodeConnectionListChanged() override;
 	//virtual void GetMenuEntries(struct FGraphContextMenuBuilder & ContextMenuBuilder) const override;
-	virtual void GetContextMenuActions(const FGraphNodeContextMenuBuilder & Context) const override;
+	//virtual void GetContextMenuActions(const FGraphNodeContextMenuBuilder & Context) const override;
+	virtual void GetNodeContextMenuActions(class UToolMenu * Menu, class UGraphNodeContextMenuContext * Context) const override;
 	virtual void OnRenameNode(const FString& NewName) override;
 	virtual TSharedPtr<class INameValidatorInterface> MakeNameValidator() const override;
 

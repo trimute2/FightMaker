@@ -46,7 +46,8 @@ public class FightMakerEditor : ModuleRules
 				"UnrealEd",
 				"GraphEditor",
 				"AIModule",
-				"AIGraph"
+				"AIGraph",
+				"ToolMenus"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

@@ -11,6 +11,7 @@
 #include "Kismet2/KismetEditorUtilities.h"
 #include "FightMakerEditorModule.h"
 #include "AIGraphTypes.h"
+#include "ToolMenus.h"
 //#include "AssetRegistryModule.h"
 #include "ComboGraphGraph.h"
 #include "ComboGraph/ComboGraph.h"
@@ -220,6 +221,9 @@ void UComboGraphSchema::GetGraphContextActions(FGraphContextMenuBuilder& Context
 	Super::GetGraphContextActions(ContextMenuBuilder);
 }
 
+
+/*
+// Version of GetContextMenuActions from 4.23
 void UComboGraphSchema::GetContextMenuActions(const UEdGraph* CurrentGraph, const UEdGraphNode* InGraphNode, const UEdGraphPin* InGraphPin, FMenuBuilder* MenuBuilder, bool bIsDebugging) const {
 	if (InGraphNode != NULL)
 	{
@@ -234,6 +238,18 @@ void UComboGraphSchema::GetContextMenuActions(const UEdGraph* CurrentGraph, cons
 	}
 
 	Super::GetContextMenuActions(CurrentGraph, InGraphNode, InGraphPin, MenuBuilder, bIsDebugging);
+}*/
+
+void UComboGraphSchema::GetContextMenuActions(class UToolMenu * Menu, class UGraphNodeContextMenuContext * Context) const
+{
+	if (Context->Node != NULL) {
+		FToolMenuSection& Section = Menu->AddSection("ComboGraphSchemaNodeGenericActions", LOCTEXT("NodeActionsMenuHeader", "Node Actions"));
+		Section.AddMenuEntry(FGenericCommands::Get().Delete);
+		if (Context->Node->bCanRenameNode) {
+			Section.AddMenuEntry(FGenericCommands::Get().Rename);
+		}
+	}
+	Super::GetContextMenuActions(Menu, Context);
 }
 
 const FPinConnectionResponse UComboGraphSchema::CanCreateConnection(const UEdGraphPin * A, const UEdGraphPin * B) const

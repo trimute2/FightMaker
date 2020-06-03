@@ -1,5 +1,6 @@
-#include "FightMakerEditorModule.h"
+
 #include "ComboGraphAssetTypeActions.h"
+#include "FightMakerEditorModule.h"
 #include "ComboGraph/ComboGraphEditor.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "ComboGraph/ComboGraph.h"

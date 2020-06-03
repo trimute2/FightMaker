@@ -403,7 +403,7 @@ void FComboGraphEditor::PostUndo(bool bSuccess)
 	}
 }
 
-void FComboGraphEditor::NotifyPostChange(const FPropertyChangedEvent & PropertyChangedEvent, UProperty * PropertyThatChanged)
+void FComboGraphEditor::NotifyPostChange(const FPropertyChangedEvent & PropertyChangedEvent, FProperty * PropertyThatChanged)
 {
 	if (ComboGraphGraphEditor.IsValid() && PropertyChangedEvent.ChangeType != EPropertyChangeType::Interactive)
 	{
